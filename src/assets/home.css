@@ -1,0 +1,133 @@
+/* 全局样式 */
+body {
+    font-family: 'Inter', 'system-ui', 'sans-serif';
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* 确保 App.vue 根元素高度占满视口 */
+#app {
+    min-height: 100vh;
+}
+
+/* Home.vue 页面整体样式 */
+.home-page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 2rem;
+    /* 柔和的渐变背景 */
+    background: linear-gradient(135deg, #f0fdf4, #f0f9ff);
+    min-height: 100vh;
+}
+
+/* 顶部导航栏样式 */
+header {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 1.25rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+header .flex.items-center {
+    gap: 0.75rem;
+}
+
+header nav a {
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+header nav a:hover {
+    color: #16A34A;
+}
+
+header nav a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #16A34A;
+    transition: width 0.3s ease;
+}
+
+header nav a:hover::after {
+    width: 100%;
+}
+
+/* 搜索区域样式 */
+.search-area {
+    background: linear-gradient(135deg, #16A34A, #0F766E);
+    padding: 4rem 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+}
+
+.search-area input {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.search-area input:focus {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.search-area button {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.search-area button:hover {
+    background-color: rgba(22, 163, 74, 0.9);
+    transform: translateY(-1px) translateX(-1px) scale(1.05);
+}
+
+/* 快速导航样式 */
+.quick-nav {
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem 2rem;
+    border-radius: 1rem;
+    margin: 2rem 0;
+}
+
+.quick-nav-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 1rem;
+    border-radius: 0.75rem;
+}
+
+.quick-nav-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 功能模块样式 */
+.featured-modules {
+    margin: 3rem 0;
+}
+
+.module-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.module-card:hover {
+    transform: translateY(-6px) rotate(1deg);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* 热门药材区域样式 */
+.popular-herbs {
+    margin: 3rem 0;
+}
+
+.herb-cards {
+    gap: 2rem;
+}

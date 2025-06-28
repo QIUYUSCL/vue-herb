@@ -1,0 +1,21 @@
+{
+  "id": 1,
+  "herb_name": "黄芪",
+  "category_id": 1,
+  "pinyin": "huangqi",
+  "alias": "棉芪、黄耆",
+  "property": "甘，微温",
+  "meridian": "脾、肺经",
+  "efficacy": "补气固表、利尿托毒",
+  "indications": "气虚乏力、食少便溏、自汗",
+  "usage": "煎服，9-30g；蜜炙可增强补气作用",
+  "contraindication": "阴虚阳亢者忌用",
+  "production_area": "内蒙古",
+  "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Astragalus_membranaceus.jpg/220px-Astragalus_membranaceus.jpg",
+  "views": 120,
+  "likes": 35,
+  "collections": 28,
+  "status": "0",
+  "sort": 5,
+  "create_time": "2025-01-15T08:30:00"
+}
