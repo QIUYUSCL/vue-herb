@@ -77,9 +77,10 @@ const fetchVideoDetail = async () => {
         video_id: 1,
         title: '中药材鉴别教程',
         description: '详细讲解中药材的鉴别方法',
-        video_url: 'https://example.com/herb-identification-video.mp4',
+        // 使用网络视频链接
+        video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
         cover_image: 'https://picsum.photos/300/200?random=1&text=Herb+Identification',
-        duration: 930,
+        duration: 596,
         category: '中药材鉴别',
         status: '0',
         views: 1200,
@@ -92,9 +93,10 @@ const fetchVideoDetail = async () => {
         video_id: 2,
         title: '中药炮制方法',
         description: '介绍常见中药的炮制流程',
-        video_url: 'https://example.com/herb-processing-video.mp4',
+        // 使用网络视频链接
+        video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
         cover_image: 'https://picsum.photos/300/200?random=2&text=Herb+Processing',
-        duration: 1215,
+        duration: 674,
         category: '中药炮制',
         status: '0',
         views: 800,
@@ -119,5 +121,4 @@ onMounted(() => {
 const goBack = () => {
   router.go(-1);
 };
-
 </script>

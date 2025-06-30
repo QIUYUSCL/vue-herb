@@ -4,7 +4,17 @@ spring:
   application:
     name: spring-boot-application
   datasource:
-    url: jdbc:mysql://localhost:3306/ry-vue?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: your_username
-    password: your_password
+    url: jdbc:mysql://localhost:3306/ruoyi_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: Scl03282219
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    serialization:
+      indent-output: true
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+#    ????
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    map-underscore-to-camel-case: true
