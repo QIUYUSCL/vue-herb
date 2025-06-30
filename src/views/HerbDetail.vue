@@ -1,8 +1,20 @@
 <template>
   <div class="bg-gray-50 min-h-screen">
     <Header />
+    <!-- 面包屑导航 -->
+    <div class="bg-gray-100 py-3">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center text-sm text-gray-600">
+          <router-link to="/" class="hover:text-primary">首页</router-link>
+          <i class="fa fa-angle-right mx-2 text-gray-400"></i>
+          <router-link to="/herbs" class="hover:text-primary">药材大全</router-link>
+          <i class="fa fa-angle-right mx-2 text-gray-400"></i>
+          <span v-if="herb" class="text-gray-800">{{ herb.herb_name }}</span>
+          <span v-else class="text-gray-800">药材详情</span>
+        </div>
+      </div>
+    </div>
     <div class="container mx-auto px-4 py-8">
-      <!-- 返回按钮 -->
       <el-button type="success" round :icon="Back" @click="goBack" class="mb-4" />
       <div v-if="loading" class="text-center text-gray-600">加载中...</div>
       <div v-else-if="herb" class="bg-white p-6 rounded-lg shadow-md">

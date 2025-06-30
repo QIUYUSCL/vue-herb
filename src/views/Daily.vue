@@ -1,7 +1,16 @@
 <template>
   <Header />
+  <!-- 面包屑导航 -->
+  <div class="bg-gray-100 py-3">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center text-sm text-gray-600">
+        <router-link to="/" class="hover:text-primary">首页</router-link>
+        <i class="fa fa-angle-right mx-2 text-gray-400"></i>
+        <span class="text-gray-800">每日一学</span>
+      </div>
+    </div>
+  </div>
   <div class="daily-page bg-gray-50 min-h-screen p-8">
-    <h1 class="text-3xl font-bold text-primary mb-8 text-center">每日一学</h1>
     <div v-if="loading" class="text-center text-xl">
       <i class="fa fa-spinner fa-spin text-primary text-3xl"></i>
       <p class="mt-2">加载中...</p>
@@ -98,7 +107,7 @@ const fetchDailyArticles = async () => {
             }
           ]
         });
-      }, 1000);
+      }, 100);
     });
     dailyArticles.value = response.data.filter(article => article.status === '0');
   } catch (err) {

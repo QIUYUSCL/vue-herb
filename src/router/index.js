@@ -15,7 +15,7 @@ import DailyDetail from "@/views/DailyDetail.vue";
 const routes = [
     {
         path: '/',
-        redirect: '/test'
+        redirect: '/home'
     },
     {
         path: '/home',

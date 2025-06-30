@@ -1,8 +1,17 @@
 <template>
   <div class="bg-gray-50 min-h-screen">
     <Header />
+    <!-- 面包屑导航 -->
+    <div class="bg-gray-100 py-3">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center text-sm text-gray-600">
+          <router-link to="/" class="hover:text-primary">首页</router-link>
+          <i class="fa fa-angle-right mx-2 text-gray-400"></i>
+          <span class="text-gray-800">视频教程</span>
+        </div>
+      </div>
+    </div>
     <div class="container mx-auto px-4 py-8">
-      <h2 class="text-2xl font-bold text-primary mb-6 text-center">视频教程</h2>
       <div v-if="loading" class="text-center text-gray-600">加载中...</div>
       <div v-else class="video-cards grid grid-cols-1 md:grid-cols-3 gap-6">
         <template v-for="video in filteredVideos" :key="video.video_id">

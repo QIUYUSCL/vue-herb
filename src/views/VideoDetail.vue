@@ -1,7 +1,21 @@
 <template>
   <div class="bg-gray-50 min-h-screen">
     <Header />
+    <!-- 面包屑导航 -->
+    <div class="bg-gray-100 py-3">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center text-sm text-gray-600">
+          <router-link to="/" class="hover:text-primary">首页</router-link>
+          <i class="fa fa-angle-right mx-2 text-gray-400"></i>
+          <router-link to="/videos" class="hover:text-primary">视频教程</router-link>
+          <i class="fa fa-angle-right mx-2 text-gray-400"></i>
+          <span v-if="video" class="text-gray-800">{{ video.title }}</span>
+          <span v-else class="text-gray-800">视频详情</span>
+        </div>
+      </div>
+    </div>
     <div class="container mx-auto px-4 py-8">
+      <el-button type="success" round :icon="Back" @click="goBack" class="mb-4" />
       <div v-if="loading" class="text-center text-gray-600">加载中...</div>
       <div v-else-if="video" class="video-detail bg-white p-6 rounded-lg shadow-md">
         <!-- 视频播放器 -->
@@ -38,6 +52,8 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
+import {Back} from "@element-plus/icons-vue";
+import router from "@/router";
 
 const route = useRoute();
 const video = ref(null);
@@ -99,4 +115,9 @@ const fetchVideoDetail = async () => {
 onMounted(() => {
   fetchVideoDetail();
 });
+
+const goBack = () => {
+  router.go(-1);
+};
+
 </script>

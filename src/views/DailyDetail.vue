@@ -1,6 +1,19 @@
 <template>
   <div class="bg-gray-50 min-h-screen">
     <Header />
+    <!-- 面包屑导航 -->
+    <div class="bg-gray-100 py-3">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center text-sm text-gray-600">
+          <router-link to="/" class="hover:text-primary">首页</router-link>
+          <i class="fa fa-angle-right mx-2 text-gray-400"></i>
+          <router-link to="/daily" class="hover:text-primary">每日一学</router-link>
+          <i class="fa fa-angle-right mx-2 text-gray-400"></i>
+          <span v-if="article" class="text-gray-800">{{ article.title }}</span>
+          <span v-else class="text-gray-800">文章详情</span>
+        </div>
+      </div>
+    </div>
     <div class="container mx-auto px-4 py-8">
       <!-- 返回按钮 -->
       <el-button type="success" round :icon="Back" @click="goBack" class="mb-4" />
