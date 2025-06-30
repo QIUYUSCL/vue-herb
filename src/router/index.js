@@ -9,6 +9,8 @@ import HerbDetail from "@/views/HerbDetail.vue";
 import UserCenter from "@/views/UserCenter.vue";
 import Videos from "@/views/Videos.vue";
 import VideoDetail from "@/views/VideoDetail.vue";
+import Daily from "@/views/Daily.vue";
+import DailyDetail from "@/views/DailyDetail.vue";
 
 const routes = [
     {
@@ -64,7 +66,17 @@ const routes = [
         path: '/video-detail/:id',
         name: 'VideoDetail',
         component: VideoDetail
-    }
+    },
+    {
+        path:'/daily',
+        name:'Daily',
+        component: Daily,
+    },
+    {
+        path: '/daily/:id',
+        name: 'DailyDetail',
+        component: DailyDetail
+    },
 
 ];
 
