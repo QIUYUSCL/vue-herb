@@ -34,14 +34,35 @@
           <i class="fa fa-star text-yellow-400"></i>
           <span class="ml-1 text-sm text-gray-600">{{ herb.rating }}</span>
         </div>
-        <div class="mb-4">
-          <p class="text-sm font-medium mb-1">性味：{{ herb.property }}</p>
-          <p class="text-sm font-medium mb-1">归经：{{ herb.meridian }}</p>
-          <p class="text-sm font-medium mb-1">功效：{{ herb.efficacy }}</p>
-          <p class="text-sm font-medium mb-1">主治：{{ herb.indications }}</p>
-          <p class="text-sm font-medium mb-1">用法用量：{{ herb.usage }}</p>
-          <p class="text-sm font-medium mb-1">使用禁忌：{{ herb.contraindication }}</p>
-          <p class="text-sm font-medium mb-1">产地：{{ herb.production_area }}</p>
+        <div class="mb-4 herb-info">
+          <div class="info-item">
+            <span class="info-label">性味：</span>
+            <span class="info-content">{{ herb.property }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">归经：</span>
+            <span class="info-content">{{ herb.meridian }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">功效：</span>
+            <span class="info-content">{{ herb.efficacy }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">主治：</span>
+            <span class="info-content">{{ herb.indications }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">用法用量：</span>
+            <span class="info-content">{{ herb.usage }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">使用禁忌：</span>
+            <span class="info-content">{{ herb.contraindication }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">产地：</span>
+            <span class="info-content">{{ herb.production_area }}</span>
+          </div>
         </div>
         <div class="flex items-center space-x-4">
           <div class="flex items-center">
@@ -187,4 +208,28 @@ const goBack = () => {
 
 <style scoped>
 @import '@/assets/herbs.css';
+
+.herb-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* 项之间的间距 */
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+}
+
+.info-label {
+  width: 80px; /* 标签固定宽度 */
+  font-size: 0.875rem; /* 14px */
+  font-weight: 500;
+  color: #374151; /* 深灰色 */
+}
+
+.info-content {
+  flex: 1;
+  font-size: 0.875rem; /* 14px */
+  color: #6b7280; /* 中灰色 */
+}
 </style>
