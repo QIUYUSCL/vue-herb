@@ -17,4 +17,8 @@ public class HerbInfoService {
     public List<HerbInfo> selectAll(){
         return herbInfoMapper.selectAll();
     }
+
+    public HerbInfo selectById(Integer id) {
+        return herbInfoMapper.selectById(id);
+    }
 }

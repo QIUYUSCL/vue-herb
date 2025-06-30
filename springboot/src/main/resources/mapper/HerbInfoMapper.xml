@@ -8,5 +8,8 @@
         select * from herb_info
     </select>
 
+    <select id="selectById" parameterType="int" resultType="org.example.springboot.entity.HerbInfo">
+        select * from herb_info where herb_id = #{id}
+    </select>
 
 </mapper>

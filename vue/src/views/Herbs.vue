@@ -49,7 +49,7 @@
               <el-option label="清热" value="clear" />
               <el-option label="活血" value="activate" />
               <el-option label="祛湿" value="dispel" />
-              <el-option label="化痰" value="resolve" />
+              <el-option label="止痛" value="resolve" />
             </el-select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <i class="fa fa-chevron-down text-xs"></i>
@@ -87,10 +87,7 @@
               <div class="p-4">
                 <p class="text-sm text-gray-600 mb-1">{{ herb.pinyin }}</p>
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ herb.herb_name }}</h3>
-                <!-- 数据中没有 description 字段，用 efficacy 替代 -->
-                <p class="text-sm text-gray-600 mb-4">{{ herb.efficacy }}</p>
                 <div class="flex items-center space-x-2">
-                  <!-- 数据中 efficacy 字段不是之前的英文缩写，需要重新处理 -->
                   <span
                       :class="efficacyColors[getEfficacyKey(herb.efficacy)] + ' text-xs px-2 py-1 rounded-full'"
                   >{{ herb.efficacy }}</span>
@@ -118,12 +115,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import Footer from "@/components/Footer.vue";
 import Header from "@/components/Header.vue";
 import request from "@/utils/request";
 import {ElMessage} from "element-plus";
-
 
 
 // 加载状态
@@ -132,10 +128,6 @@ const loading = ref(true);
 const allHerbs = ref([]);
 // 药材类别数据
 const categories = ref([]);
-
-
-
-
 
 // 搜索关键词
 const searchQuery = ref('');
@@ -166,6 +158,17 @@ const efficacyColors = {
   'resolve': 'bg-indigo-100 text-indigo-800'
 };
 
+// 动态生成功效映射
+const generateEfficacyMap = () => {
+  const efficacyMap = {};
+  const uniqueEfficacies = [...new Set(allHerbs.value.map(herb => herb.efficacy))];
+  uniqueEfficacies.forEach((efficacy, index) => {
+
+    efficacyMap[efficacy] = ['tonify', 'clear', 'activate', 'dispel', 'resolve'][index % 5];
+  });
+  return efficacyMap;
+};
+
 // 获取分类名称
 const getCategoryName = (categoryId) => {
   const category = categories.value.find(cat => cat.category_id === Number(categoryId));
@@ -174,14 +177,36 @@ const getCategoryName = (categoryId) => {
 
 // 获取功效名称
 const getEfficacyName = (efficacy) => {
-  const efficacyMap = {
+  const efficacyMap = generateEfficacyMap();
+  const key = efficacyMap[efficacy];
+  const nameMap = {
     'tonify': '补虚',
     'clear': '清热',
     'activate': '活血',
     'dispel': '祛湿',
     'resolve': '化痰'
   };
-  return efficacyMap[efficacy] || '';
+  return nameMap[key] || '';
+};
+
+// 根据功效描述获取功效 key，基于关键词匹配
+const getEfficacyKey = (efficacyName) => {
+  const keywordMap = {
+    'tonify': ['补', '益', '养'],
+    'clear': ['清热', '解毒', '凉血'],
+    'activate': ['活血', '通经', '化瘀'],
+    'dispel': ['祛湿', '祛风', '除湿','湿'],
+    'resolve': ['止痛','痛']
+  };
+
+  for (const [key, keywords] of Object.entries(keywordMap)) {
+    for (const keyword of keywords) {
+      if (efficacyName.includes(keyword)) {
+        return key;
+      }
+    }
+  }
+  return '';
 };
 
 // 计算属性，用于过滤药材列表
@@ -215,8 +240,7 @@ const handleCurrentChange = (newPage) => {
 const load = async () => {
   try {
     const response = await request.get('/herb/info/selectAll'); // 确认请求路径
-    console.log('响应数据:', response.code); // 打印响应数据
-    // 直接将响应数据赋值给 allHerbs
+
     if(response.code === "200") {
       allHerbs.value = response.data;
     }
@@ -232,7 +256,6 @@ const loadCategories = async () => {
     const response = await request.get('/herb/category/selectAll');
     if (response.code === "200") {
       categories.value = response.data;
-      ElMessage.success('药材种类数据加载成功');
     } else {
       ElMessage.error('药材种类数据加载失败，请稍后重试');
     }
@@ -247,15 +270,7 @@ onMounted(() => {
   loadCategories();
 });
 
-// 根据功效描述获取功效 key，需要根据实际功效描述扩展
-const getEfficacyKey = (efficacyName) => {
-  const efficacyMap = {
-    '表透疹，消食开胃，止痛解毒。': 'tonify',
-    '解表散寒，祛风除湿，止痛。': 'tonify',
-    // 依据实际数据添加更多映射
-  };
-  return efficacyMap[efficacyName] || '';
-};
+
 </script>
 
 <style scoped>

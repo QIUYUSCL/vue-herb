@@ -6,8 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="94ae4c3b-50de-4621-aa99-7260aabd054f" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/common/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/common/Result.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/HerbController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/HerbController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/HerbInfoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/HerbInfoMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/HerbInfoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/HerbInfoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/mapper/HerbInfoMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/mapper/HerbInfoMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/HerbDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/HerbDetail.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/src/views/Herbs.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/Herbs.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -112,7 +115,7 @@
       <workItem from="1751265915099" duration="297000" />
       <workItem from="1751266248147" duration="9434000" />
       <workItem from="1751276555591" duration="12305000" />
-      <workItem from="1751289069447" duration="1640000" />
+      <workItem from="1751289069447" duration="4198000" />
     </task>
     <servers />
   </component>

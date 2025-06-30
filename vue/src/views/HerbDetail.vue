@@ -22,11 +22,12 @@
         <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ herb.herb_name }}</h2>
         <p class="text-sm text-gray-600 mb-4">{{ herb.description }}</p>
         <div class="flex items-center space-x-2 mb-4">
+          <!-- 使用计算属性获取分类名称 -->
           <span
-              :class="categoryColors[getCategoryName(herb.category_id)] + ' text-xs px-2 py-1 rounded-full'"
-          >{{ getCategoryName(herb.category_id) }}</span>
+            :class="categoryColors[categoryName] + ' text-xs px-2 py-1 rounded-full'"
+          >{{ categoryName }}</span>
           <span
-              :class="efficacyColors[herb.efficacy] + ' text-xs px-2 py-1 rounded-full'"
+            :class="efficacyColors[getEfficacyKey(herb.efficacy)] + ' text-xs px-2 py-1 rounded-full'"
           >{{ getEfficacyName(herb.efficacy) }}</span>
         </div>
         <div class="flex items-center mb-4">
@@ -67,24 +68,27 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import { Back } from "@element-plus/icons-vue";
+import request from '@/utils/request';
+import { ElMessage } from 'element-plus';
 
 const route = useRoute();
 const router = useRouter();
 const herb = ref(null);
 const loading = ref(true);
+const categories = ref([]);
+const categoryId = ref(null);
 
 // 分类标签颜色映射
 const categoryColors = {
-  '根茎类': 'bg-green-100 text-green-800',
-  '叶类': 'bg-emerald-100 text-emerald-800',
-  '花类': 'bg-pink-100 text-pink-800',
-  '果实种子类': 'bg-amber-100 text-amber-800',
-  '矿物类': 'bg-gray-100 text-gray-800'
+  '解表药': 'bg-green-100 text-green-800',
+  '清热药': 'bg-emerald-100 text-emerald-800',
+  '祛风湿药': 'bg-pink-100 text-pink-800',
+  '补虚药': 'bg-amber-100 text-amber-800',
 };
 
 // 功效标签颜色映射
@@ -96,105 +100,78 @@ const efficacyColors = {
   'resolve': 'bg-indigo-100 text-indigo-800'
 };
 
-// 获取分类名称
-const getCategoryName = (categoryId) => {
-  const categoryMap = {
-    1: '根茎类',
-    2: '叶类',
-    3: '果实种子类'
+// 根据功效描述获取功效 key，基于关键词匹配
+const getEfficacyKey = (efficacyName) => {
+  const keywordMap = {
+    'tonify': ['补', '益', '养'],
+    'clear': ['清热', '解毒', '凉血'],
+    'activate': ['活血', '通经', '化瘀'],
+    'dispel': ['祛湿', '祛风', '除湿'],
+    'resolve': ['止痛', '痛']
   };
-  return categoryMap[categoryId] || '';
+
+  for (const [key, keywords] of Object.entries(keywordMap)) {
+    for (const keyword of keywords) {
+      if (efficacyName.includes(keyword)) {
+        return key;
+      }
+    }
+  }
+  return '';
 };
 
 // 获取功效名称
 const getEfficacyName = (efficacy) => {
   const efficacyMap = {
-    '补气固表、利尿托毒': '补虚',
-    '补血活血、调经止痛': '活血',
-    '滋补肝肾、益精明目': '补虚'
+    'tonify': '补虚',
+    'clear': '清热',
+    'activate': '活血',
+    'dispel': '祛湿',
+    'resolve': '化痰'
   };
-  return efficacyMap[efficacy] || '';
+  const key = getEfficacyKey(efficacy);
+  return efficacyMap[key] || '';
 };
 
-// 模拟从 API 获取药材数据
+// 计算属性，根据 categoryId 获取分类名称
+const categoryName = computed(() => {
+  const category = categories.value.find(cat => cat.category_id === categoryId.value);
+  return category ? category.category_name : '';
+});
+
+// 从 API 获取药材数据
 const fetchHerbData = async () => {
   try {
-    // 模拟 API 请求延迟
-    await new Promise(resolve => setTimeout(resolve, 100));
     const herbId = parseInt(route.params.id);
-    const allHerbs = [
-      {
-        herb_id: 1,
-        herb_name: '黄芪',
-        category_id: 1,
-        pinyin: 'huangqi',
-        alias: '棉芪、黄耆',
-        property: '甘，微温',
-        meridian: '脾、肺经',
-        efficacy: '补气固表、利尿托毒',
-        indications: '气虚乏力、食少便溏、自汗',
-        usage: '煎服，9 - 30g；蜜炙可增强补气作用',
-        contraindication: '阴虚阳亢者忌用',
-        production_area: '内蒙古',
-        image_url: 'https://picsum.photos/seed/ginseng/300/200',
-        views: 120,
-        likes: 35,
-        collections: 28,
-        status: '0',
-        sort: 5,
-        create_time: '2025-01-15 08:30:00',
-        rating: 4.7
-      },
-      {
-        herb_id: 2,
-        herb_name: '当归',
-        category_id: 2,
-        pinyin: 'danggui',
-        alias: '干归、文无',
-        property: '甘、辛，温',
-        meridian: '肝、心、脾经',
-        efficacy: '补血活血、调经止痛',
-        indications: '血虚萎黄、月经不调、痛经',
-        usage: '煎服，6 - 12g；酒当归活血作用增强',
-        contraindication: '湿盛中满、大便溏泄者忌用',
-        production_area: '甘肃',
-        image_url: 'https://picsum.photos/seed/astragalus/300/200',
-        views: 98,
-        likes: 27,
-        collections: 22,
-        status: '0',
-        sort: 3,
-        create_time: '2025-02-20 10:15:00',
-        rating: 4.8
-      },
-      {
-        herb_id: 3,
-        herb_name: '枸杞',
-        category_id: 3,
-        pinyin: 'gouqi',
-        alias: '枸杞子、地骨皮',
-        property: '甘，平',
-        meridian: '肝、肾经',
-        efficacy: '滋补肝肾、益精明目',
-        indications: '虚劳精亏、腰膝酸痛、眩晕耳鸣',
-        usage: '煎服，6 - 12g；亦可泡水、泡酒',
-        contraindication: '外邪实热、脾虚有湿者忌用',
-        production_area: '宁夏',
-        image_url: 'https://picsum.photos/seed/angelica/300/200',
-        views: 156,
-        likes: 42,
-        collections: 35,
-        status: '0',
-        sort: 8,
-        create_time: '2025-03-10 14:20:00',
-        rating: 4.6
-      }
-    ];
-    herb.value = allHerbs.find(item => item.herb_id === herbId);
+    const response = await request.get(`/herb/info/selectById/${herbId}`);
+    if (response.code === "200") {
+      herb.value = response.data;
+      categoryId.value = response.data.category_id;
+      // 调用获取分类信息的接口
+      await fetchCategories();
+    } else {
+      ElMessage.error('获取药材数据失败');
+    }
   } catch (error) {
     console.error('获取药材数据失败:', error);
+    ElMessage.error('获取药材数据失败，请稍后重试');
   } finally {
     loading.value = false;
+  }
+};
+
+// 获取所有分类信息
+const fetchCategories = async () => {
+  try {
+    const response = await request.get('/herb/category/selectAll');
+    if (response.code === "200") {
+      categories.value = response.data;
+    } else {
+      ElMessage.error('获取分类信息失败');
+    }
+  } catch (error) {
+    console.error('获取分类信息失败:', error);
+    ElMessage.error('获取分类信息失败，请稍后重试');
   }
 };
 

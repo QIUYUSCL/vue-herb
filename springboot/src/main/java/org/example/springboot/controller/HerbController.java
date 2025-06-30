@@ -6,10 +6,7 @@ import org.example.springboot.entity.HerbCategory;
 import org.example.springboot.entity.HerbInfo;
 import org.example.springboot.service.HerbCategoryService;
 import org.example.springboot.service.HerbInfoService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,17 +26,18 @@ public class HerbController {
         List<HerbInfo> list = herbInfoService.selectAll();
         return Result.success(list);
     }
-//    public List<HerbInfo> selectAll(){
-//        return herbInfoService.selectAll();
-//    }
+
+    @GetMapping("/info/selectById/{id}")
+    public Result selectById(@PathVariable Integer id) {
+        HerbInfo herbInfo = herbInfoService.selectById(id);
+        return Result.success(herbInfo);
+    }
 
     @GetMapping("/category/selectAll")
     public Result selectAllHerbCategory() {
         List<HerbCategory> list = herbCategoryService.selectAll();
         return Result.success(list);
     }
-
-//    public List<HerbCategory> selectAllCategory(){
-//        return herbCategoryService.selectAll();
-//    }
 }
+
+
