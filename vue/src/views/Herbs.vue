@@ -79,18 +79,21 @@
                       :class="categoryColors[getCategoryName(herb.category_id)] + ' text-xs px-2 py-1 rounded-full'"
                   >{{ getCategoryName(herb.category_id) }}</span>
                 </div>
+                <!-- 由于数据中没有 rating 字段，暂时用 0 替代 -->
                 <div class="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1 text-sm font-medium text-primary">
-                  <i class="fa fa-star text-yellow-400"></i> {{ herb.rating }}
+                  <i class="fa fa-star text-yellow-400"></i> 0
                 </div>
               </div>
               <div class="p-4">
                 <p class="text-sm text-gray-600 mb-1">{{ herb.pinyin }}</p>
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ herb.herb_name }}</h3>
-                <p class="text-sm text-gray-600 mb-4">{{ herb.description }}</p>
+                <!-- 数据中没有 description 字段，用 efficacy 替代 -->
+                <p class="text-sm text-gray-600 mb-4">{{ herb.efficacy }}</p>
                 <div class="flex items-center space-x-2">
+                  <!-- 数据中 efficacy 字段不是之前的英文缩写，需要重新处理 -->
                   <span
-                      :class="efficacyColors[herb.efficacy] + ' text-xs px-2 py-1 rounded-full'"
-                  >{{ getEfficacyName(herb.efficacy) }}</span>
+                      :class="efficacyColors[getEfficacyKey(herb.efficacy)] + ' text-xs px-2 py-1 rounded-full'"
+                  >{{ herb.efficacy }}</span>
                 </div>
               </div>
             </router-link>
@@ -118,7 +121,10 @@
 import { ref, computed, onMounted } from 'vue';
 import Footer from "@/components/Footer.vue";
 import Header from "@/components/Header.vue";
-import axios from "axios";
+import request from "@/utils/request";
+import {ElMessage} from "element-plus";
+
+
 
 // 加载状态
 const loading = ref(true);
@@ -126,6 +132,10 @@ const loading = ref(true);
 const allHerbs = ref([]);
 // 药材类别数据
 const categories = ref([]);
+
+
+
+
 
 // 搜索关键词
 const searchQuery = ref('');
@@ -178,27 +188,15 @@ const getEfficacyName = (efficacy) => {
 const filteredHerbs = computed(() => {
   return allHerbs.value.filter(herb => {
     const matchesSearch = herb.herb_name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-        herb.description.toLowerCase().includes(searchQuery.value.toLowerCase());
+        herb.efficacy.toLowerCase().includes(searchQuery.value.toLowerCase());
 
     const matchesCategory = categoryFilter.value === 'all' || herb.category_id.toString() === categoryFilter.value;
 
-    const matchesEfficacy = efficacyFilter.value === 'all' || herb.efficacy === efficacyFilter.value;
+    const matchesEfficacy = efficacyFilter.value === 'all' || getEfficacyKey(herb.efficacy) === efficacyFilter.value;
 
     return matchesSearch && matchesCategory && matchesEfficacy && herb.status === '0';
   });
 });
-
-// 根据功效名称获取功效 key
-const getEfficacyKey = (efficacyName) => {
-  const efficacyMap = {
-    '补虚': 'tonify',
-    '清热': 'clear',
-    '活血': 'activate',
-    '祛湿': 'dispel',
-    '化痰': 'resolve'
-  };
-  return efficacyMap[efficacyName] || '';
-};
 
 // 计算属性，用于获取当前页的药材列表
 const paginatedHerbs = computed(() => {
@@ -212,36 +210,52 @@ const handleCurrentChange = (newPage) => {
   currentPage.value = newPage;
 };
 
-// 从 API 获取数据
-const fetchData = async () => {
-  try {
-    // 获取药材信息
-    const herbInfoResponse = await axios.get('/herb/info/selectAll');
-    console.log('药材信息响应:', herbInfoResponse);
-    allHerbs.value = Array.isArray(herbInfoResponse.data) ? herbInfoResponse.data : [];
 
-    // 获取药材分类信息
-    const herbCategoryResponse = await axios.get('/herb/category/selectAll');
-    console.log('药材分类信息响应:', herbCategoryResponse);
-    categories.value = Array.isArray(herbCategoryResponse.data) ? herbCategoryResponse.data : [];
-  } catch (error) {
-    console.error('获取数据失败:', error);
-    if (error.response) {
-      console.error('响应状态:', error.response.status);
-      console.error('响应数据:', error.response.data);
-    } else if (error.request) {
-      console.error('没有收到响应:', error.request);
-    } else {
-      console.error('请求设置出错:', error.message);
+// 定义 load 函数
+const load = async () => {
+  try {
+    const response = await request.get('/herb/info/selectAll'); // 确认请求路径
+    console.log('响应数据:', response.code); // 打印响应数据
+    // 直接将响应数据赋值给 allHerbs
+    if(response.code === "200") {
+      allHerbs.value = response.data;
     }
-  } finally {
-    loading.value = false;
+  } catch (error) {
+    console.error('请求出错:', error);
+    ElMessage.error('加载失败');
+  }
+};
+
+// 定义 loadCategories 函数，获取药材种类数据
+const loadCategories = async () => {
+  try {
+    const response = await request.get('/herb/category/selectAll');
+    if (response.code === "200") {
+      categories.value = response.data;
+      ElMessage.success('药材种类数据加载成功');
+    } else {
+      ElMessage.error('药材种类数据加载失败，请稍后重试');
+    }
+  } catch (error) {
+    console.error('请求出错:', error);
+    ElMessage.error('药材种类数据加载失败');
   }
 };
 
 onMounted(() => {
-  fetchData();
+  load();
+  loadCategories();
 });
+
+// 根据功效描述获取功效 key，需要根据实际功效描述扩展
+const getEfficacyKey = (efficacyName) => {
+  const efficacyMap = {
+    '表透疹，消食开胃，止痛解毒。': 'tonify',
+    '解表散寒，祛风除湿，止痛。': 'tonify',
+    // 依据实际数据添加更多映射
+  };
+  return efficacyMap[efficacyName] || '';
+};
 </script>
 
 <style scoped>
