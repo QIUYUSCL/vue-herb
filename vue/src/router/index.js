@@ -4,7 +4,7 @@ import Home from '../views/Home.vue';
 import Test from "@/views/test.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/register.vue";
-import Herbs from "@/views/herbs.vue";
+import Herbs from "@/views/Herbs.vue";
 import HerbDetail from "@/views/HerbDetail.vue";
 import UserCenter from "@/views/UserCenter.vue";
 import Videos from "@/views/Videos.vue";
@@ -41,7 +41,7 @@ const routes = [
     //引入herbs路由
     {
         path:'/herbs',
-        name:'herbs',
+        name:'Herbs',
         component: Herbs
     },
     //引入herbdetail路由

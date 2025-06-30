@@ -11,12 +11,6 @@ public class Result {
     public Result() {
     }
 
-//    public static Result success() {
-//        Result result = new Result();
-//        result.setCode("200");
-//        result.setMsg("请求成功");
-//        return result;
-//    }
 
     public static Result error() {
         Result result = new Result();

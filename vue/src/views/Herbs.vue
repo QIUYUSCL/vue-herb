@@ -118,6 +118,7 @@
 import { ref, computed, onMounted } from 'vue';
 import Footer from "@/components/Footer.vue";
 import Header from "@/components/Header.vue";
+import axios from "axios";
 
 // 加载状态
 const loading = ref(true);
@@ -140,11 +141,10 @@ const pageSize = ref(9);
 
 // 分类标签颜色映射
 const categoryColors = {
-  '根茎类': 'bg-green-100 text-green-800',
-  '叶类': 'bg-emerald-100 text-emerald-800',
-  '花类': 'bg-pink-100 text-pink-800',
-  '果实种子类': 'bg-amber-100 text-amber-800',
-  '矿物类': 'bg-gray-100 text-gray-800'
+  '解表药': 'bg-green-100 text-green-800',
+  '清热药': 'bg-emerald-100 text-emerald-800',
+  '祛风湿药': 'bg-pink-100 text-pink-800',
+  '补虚药': 'bg-amber-100 text-amber-800',
 };
 
 // 功效标签颜色映射
@@ -182,7 +182,6 @@ const filteredHerbs = computed(() => {
 
     const matchesCategory = categoryFilter.value === 'all' || herb.category_id.toString() === categoryFilter.value;
 
-    // 直接比较 efficacyFilter 的值
     const matchesEfficacy = efficacyFilter.value === 'all' || herb.efficacy === efficacyFilter.value;
 
     return matchesSearch && matchesCategory && matchesEfficacy && herb.status === '0';
@@ -211,45 +210,30 @@ const paginatedHerbs = computed(() => {
 // 当前页码变化时的处理函数
 const handleCurrentChange = (newPage) => {
   currentPage.value = newPage;
-  console.log('Current page changed to:', newPage); // 添加日志，检查页码是否正确更新
 };
 
-// 模拟从 API 获取数据
+// 从 API 获取数据
 const fetchData = async () => {
   try {
-    // 模拟 API 请求延迟
-    await new Promise(resolve => setTimeout(resolve, 100));
-    allHerbs.value = [
-      { herb_id: 1, herb_name: '黄芪', category_id: 1, efficacy: 'tonify', image_url: 'https://picsum.photos/seed/ginseng/300/200', rating: 4.9, description: '大补元气，复脉固脱，补脾益肺，生津养血，安神益智。', pinyin: 'rén shēn', status: '0' },
-      { herb_id: 2, herb_name: '当归', category_id: 1, efficacy: 'tonify', image_url: 'https://picsum.photos/seed/astragalus/300/200', rating: 4.7, description: '补气升阳，固表止汗，利水消肿，生津养血，行滞通痹，托毒排脓，敛疮生肌。', pinyin: 'huáng qí', status: '0' },
-      { herb_id: 3, herb_name: '枸杞', category_id: 1, efficacy: 'activate', image_url: 'https://picsum.photos/seed/angelica/300/200', rating: 4.8, description: '补血活血，调经止痛，润肠通便。', pinyin: 'dāng guī', status: '0' },
-      { herb_id: 4, herb_name: '人参', category_id: 4, efficacy: 'tonify', image_url: 'https://picsum.photos/seed/wolfberry/300/200', rating: 4.6, description: '滋补肝肾，益精明目。', pinyin: 'gǒu qǐ', status: '0' },
-      { herb_id: 5, herb_name: '金银花', category_id: 3, efficacy: 'clear', image_url: 'https://picsum.photos/seed/honeysuckle/300/200', rating: 4.5, description: '清热解毒，疏散风热。', pinyin: 'jīn yín huā', status: '0' },
-      { herb_id: 6, herb_name: '菊花', category_id: 3, efficacy: 'clear', image_url: 'https://picsum.photos/seed/chrysanthemum/300/200', rating: 4.4, description: '散风清热，平肝明目，清热解毒。', pinyin: 'jú huā', status: '0' },
-      { herb_id: 7, herb_name: '茯苓', category_id: 1, efficacy: 'dispel', image_url: 'https://picsum.photos/seed/poria/300/200', rating: 4.3, description: '利水渗湿，健脾，宁心。', pinyin: 'fú líng', status: '0' },
-      { herb_id: 8, herb_name: '白术', category_id: 1, efficacy: 'tonify', image_url: 'https://picsum.photos/seed/atractylodes/300/200', rating: 4.2, description: '健脾益气，燥湿利水，止汗，安胎。', pinyin: 'bái zhú', status: '0' },
-      { herb_id: 9, herb_name: '甘草', category_id: 1, efficacy: 'tonify', image_url: 'https://picsum.photos/seed/licorice/300/200', rating: 4.1, description: '补脾益气，清热解毒，祛痰止咳，缓急止痛，调和诸药。', pinyin: 'gān cǎo', status: '0' },
-      { herb_id: 10, herb_name: '大黄', category_id: 1, efficacy: 'clear', image_url: 'https://picsum.photos/seed/rhubarb/300/200', rating: 4.0, description: '泻下攻积，清热泻火，凉血解毒，逐瘀通经，利湿退黄。', pinyin: 'dà huáng', status: '0' },
-      { herb_id: 11, herb_name: '陈皮', category_id: 4, efficacy: 'resolve', image_url: 'https://picsum.photos/seed/tangerine/300/200', rating: 4.7, description: '理气健脾，燥湿化痰。', pinyin: 'chén pí', status: '0' },
-      { herb_id: 12, herb_name: '麻黄', category_id: 2, efficacy: 'clear', image_url: 'https://picsum.photos/seed/ephedra/300/200', rating: 4.3, description: '发汗散寒，宣肺平喘，利水消肿。', pinyin: 'má huáng', status: '0' },
-      { herb_id: 13, herb_name: '薄荷', category_id: 2, efficacy: 'clear', image_url: 'https://picsum.photos/seed/mint/300/200', rating: 4.5, description: '疏散风热，清利头目，利咽透疹，疏肝行气。', pinyin: 'bò he', status: '0' },
-      { herb_id: 14, herb_name: '三七', category_id: 1, efficacy: 'activate', image_url: 'https://picsum.photos/seed/panax/300/200', rating: 4.9, description: '散瘀止血，消肿定痛。', pinyin: 'sān qī', status: '0' },
-      { herb_id: 15, herb_name: '天麻', category_id: 1, efficacy: 'tonify', image_url: 'https://picsum.photos/seed/gastrodia/300/200', rating: 4.6, description: '息风止痉，平抑肝阳，祛风通络。', pinyin: 'tiān má', status: '0' },
-      { herb_id: 16, herb_name: '川贝母', category_id: 1, efficacy: 'resolve', image_url: 'https://picsum.photos/seed/fritillaria/300/200', rating: 4.8, description: '清热润肺，化痰止咳，散结消痈。', pinyin: 'chuān bèi mǔ', status: '0' },
-      { herb_id: 17, herb_name: '黄连', category_id: 1, efficacy: 'clear', image_url: 'https://picsum.photos/seed/coptis/300/200', rating: 4.4, description: '清热燥湿，泻火解毒。', pinyin: 'huáng lián', status: '0' },
-      { herb_id: 18, herb_name: '杜仲', category_id: 2, efficacy: 'tonify', image_url: 'https://picsum.photos/seed/eucommia/300/200', rating: 4.5, description: '补肝肾，强筋骨，安胎。', pinyin: 'dù zhòng', status: '0' },
-      { herb_id: 19, herb_name: '麦冬', category_id: 1, efficacy: 'tonify', image_url: 'https://picsum.photos/seed/ophiopogon/300/200', rating: 4.3, description: '养阴生津，润肺清心。', pinyin: 'mài dōng', status: '0' },
-      { herb_id: 20, herb_name: '龙骨', category_id: 5, efficacy: 'tonify', image_url: 'https://picsum.photos/seed/dragonbone/300/200', rating: 4.2, description: '镇惊安神，平肝潜阳，收敛固涩。', pinyin: 'lóng gǔ', status: '0' }
-    ];
-    categories.value = [
-      { category_id: 1, category_name: '根茎类', parent_id: 0, description: '', status: '0' },
-      { category_id: 2, category_name: '叶类', parent_id: 0, description: '', status: '0' },
-      { category_id: 3, category_name: '花类', parent_id: 0, description: '', status: '0' },
-      { category_id: 4, category_name: '果实种子类', parent_id: 0, description: '', status: '0' },
-      { category_id: 5, category_name: '矿物类', parent_id: 0, description: '', status: '0' }
-    ];
+    // 获取药材信息
+    const herbInfoResponse = await axios.get('/herb/info/selectAll');
+    console.log('药材信息响应:', herbInfoResponse);
+    allHerbs.value = Array.isArray(herbInfoResponse.data) ? herbInfoResponse.data : [];
+
+    // 获取药材分类信息
+    const herbCategoryResponse = await axios.get('/herb/category/selectAll');
+    console.log('药材分类信息响应:', herbCategoryResponse);
+    categories.value = Array.isArray(herbCategoryResponse.data) ? herbCategoryResponse.data : [];
   } catch (error) {
     console.error('获取数据失败:', error);
+    if (error.response) {
+      console.error('响应状态:', error.response.status);
+      console.error('响应数据:', error.response.data);
+    } else if (error.request) {
+      console.error('没有收到响应:', error.request);
+    } else {
+      console.error('请求设置出错:', error.message);
+    }
   } finally {
     loading.value = false;
   }
