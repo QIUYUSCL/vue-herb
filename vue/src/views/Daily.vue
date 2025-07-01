@@ -11,15 +11,7 @@
     </div>
   </div>
   <div class="daily-page bg-gray-50 min-h-screen p-8">
-    <div v-if="loading" class="text-center text-xl">
-      <i class="fa fa-spinner fa-spin text-primary text-3xl"></i>
-      <p class="mt-2">加载中...</p>
-    </div>
-    <div v-else-if="error" class="text-center text-red-500 text-xl">
-      <i class="fa fa-exclamation-triangle text-red-500 text-3xl"></i>
-      <p class="mt-2">{{ error }}</p>
-    </div>
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
           v-for="article in dailyArticles"
           :key="article.article_id"
@@ -62,60 +54,33 @@ import { ref, onMounted } from 'vue';
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import { useRouter } from 'vue-router';
+import Request  from "@/utils/request.js";
+import request from "@/utils/request.js";
+import {ElMessage} from "element-plus";
 
 const router = useRouter();
 
-// 模拟 API 接口调用
+
 const loading = ref(true);
-const error = ref(null);
 const dailyArticles = ref([]);
 
-const fetchDailyArticles = async () => {
-  try {
-    // 模拟 API 响应
-    const response = await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          data: [
-            {
-              article_id: 1,
-              title: '中药材的保存方法',
-              content: '中药材的保存对于保证其药效至关重要。不同的药材有不同的保存要求...',
-              cover_image: 'https://picsum.photos/300/200?random=1&text=Herb+Storage',
-              category: '药材保存',
-              status: '0',
-              publish_time: '2025-06-30 08:00:00',
-              views: 120,
-              likes: 20,
-              comments: 5,
-              sort: 1,
-              create_time: '2025-06-30 07:00:00'
-            },
-            {
-              article_id: 2,
-              title: '常见中药材的鉴别',
-              content: '在购买中药材时，如何鉴别其真伪和品质是非常重要的。下面为你介绍几种常见中药材的鉴别方法...',
-              cover_image: 'https://picsum.photos/300/200?random=2&text=Herb+Identification',
-              category: '药材鉴别',
-              status: '0',
-              publish_time: '2025-06-29 09:30:00',
-              views: 180,
-              likes: 30,
-              comments: 8,
-              sort: 2,
-              create_time: '2025-06-29 08:30:00'
-            }
-          ]
-        });
-      }, 100);
-    });
-    dailyArticles.value = response.data.filter(article => article.status === '0');
-  } catch (err) {
-    error.value = '加载每日一学文章失败，请稍后重试。';
-  } finally {
+const load = async () => {
+  try{
+    const response = await request.get('/daily/selectAll');
+    console.log('返回的数据:', response.data); // 打印返回的数据
+    if(response.code === "200")
+    {
+      dailyArticles.value = response.data;
+    }else{
+      ElMessage.error('加载失败,请重试');
+    }
+  }catch{
+    console.error('请求出错:', error);
+    ElMessage.error('加载失败');
+  }finally {
     loading.value = false;
   }
-};
+}
 
 // 格式化日期函数
 const formatDate = (dateString) => {
@@ -128,7 +93,7 @@ const viewArticle = (articleId) => {
 };
 
 onMounted(() => {
-  fetchDailyArticles();
+  load();
 });
 </script>
 

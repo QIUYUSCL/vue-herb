@@ -16,8 +16,7 @@
     </div>
     <div class="container mx-auto px-4 py-8">
       <el-button type="success" round :icon="Back" @click="goBack" class="mb-4" />
-      <div v-if="loading" class="text-center text-gray-600">加载中...</div>
-      <div v-else-if="herb" class="bg-white p-6 rounded-lg shadow-md">
+      <div v-if="herb" class="bg-white p-6 rounded-lg shadow-md">
         <img :src="herb.image_url" :alt="herb.herb_name" class="w-full h-64 object-cover rounded-lg mb-4">
         <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ herb.herb_name }}</h2>
         <p class="text-sm text-gray-600 mb-4">{{ herb.description }}</p>
@@ -100,7 +99,6 @@ import { ElMessage } from 'element-plus';
 const route = useRoute();
 const router = useRouter();
 const herb = ref(null);
-const loading = ref(true);
 const categories = ref([]);
 const categoryId = ref(null);
 
@@ -176,8 +174,6 @@ const fetchHerbData = async () => {
   } catch (error) {
     console.error('获取药材数据失败:', error);
     ElMessage.error('获取药材数据失败，请稍后重试');
-  } finally {
-    loading.value = false;
   }
 };
 

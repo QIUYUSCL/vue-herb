@@ -38,6 +38,13 @@ public class HerbController {
         List<HerbCategory> list = herbCategoryService.selectAll();
         return Result.success(list);
     }
+
+    @GetMapping("/info/search")
+    public Result searchHerbs(@RequestParam String keyword) {
+        List<HerbInfo> list = herbInfoService.searchHerbs(keyword);
+        return Result.success(list);
+    }
+
 }
 
 

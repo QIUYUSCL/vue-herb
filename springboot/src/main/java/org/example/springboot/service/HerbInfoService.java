@@ -21,4 +21,8 @@ public class HerbInfoService {
     public HerbInfo selectById(Integer id) {
         return herbInfoMapper.selectById(id);
     }
+
+    public List<HerbInfo> searchHerbs(String keyword) {
+        return herbInfoMapper.searchHerbs("%" + keyword + "%");
+    }
 }

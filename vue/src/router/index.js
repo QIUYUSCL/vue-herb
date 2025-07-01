@@ -11,6 +11,7 @@ import Videos from "@/views/Videos.vue";
 import VideoDetail from "@/views/VideoDetail.vue";
 import Daily from "@/views/Daily.vue";
 import DailyDetail from "@/views/DailyDetail.vue";
+import SearchResult from "@/views/SearchResult.vue";
 
 const routes = [
     {
@@ -76,6 +77,11 @@ const routes = [
         path: '/daily/:id',
         name: 'DailyDetail',
         component: DailyDetail
+    },
+    {
+        path: '/search-result',
+        name: 'SearchResult',
+        component: SearchResult
     },
 
 ];

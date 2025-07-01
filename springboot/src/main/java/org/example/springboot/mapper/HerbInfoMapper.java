@@ -8,4 +8,6 @@ public interface HerbInfoMapper {
     List<HerbInfo> selectAll();
 
     HerbInfo selectById(Integer id);
+
+    List<HerbInfo> searchHerbs(String keyword);
 }

@@ -79,7 +79,6 @@
                       :class="categoryColors[getCategoryName(herb.category_id)] + ' text-xs px-2 py-1 rounded-full'"
                   >{{ getCategoryName(herb.category_id) }}</span>
                 </div>
-                <!-- 由于数据中没有 rating 字段，暂时用 0 替代 -->
                 <div class="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1 text-sm font-medium text-primary">
                   <i class="fa fa-star text-yellow-400"></i> 0
                 </div>
@@ -96,7 +95,6 @@
             </router-link>
           </template>
         </div>
-        <!-- 分页组件 -->
         <div class="flex justify-center mt-6">
           <el-pagination
               background
@@ -121,14 +119,10 @@ import Header from "@/components/Header.vue";
 import request from "@/utils/request";
 import {ElMessage} from "element-plus";
 
-
-// 加载状态
-const loading = ref(true);
 // 药材数据
 const allHerbs = ref([]);
 // 药材类别数据
 const categories = ref([]);
-
 // 搜索关键词
 const searchQuery = ref('');
 // 分类筛选
@@ -243,6 +237,9 @@ const load = async () => {
 
     if(response.code === "200") {
       allHerbs.value = response.data;
+    }
+    else{
+      ElMessage.error('加载失败,请重试');
     }
   } catch (error) {
     console.error('请求出错:', error);

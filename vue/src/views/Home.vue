@@ -10,14 +10,17 @@
         <p class="text-white/90 text-lg mb-8">探索中医药文化，了解自然草药的奥秘</p>
         <div class="relative max-w-2xl mx-auto">
           <input
+              v-model="searchQuery"
               id="searchQuery"
               type="text"
               placeholder="搜索药材、功效、偏方..."
               class="w-full py-4 px-6 rounded-full text-lg focus:outline-none shadow-lg transition-all duration-300 focus:shadow-xl"
+              @keyup.enter="handleSearch"
           >
           <button
               id="searchButton"
               class="absolute right-3 top-1/2 transform -translate-y-1/2 bg-primary hover:bg-primary/90 text-white rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300"
+              @click="handleSearch"
           >
             <i class="fa fa-search text-xl"></i>
           </button>
@@ -180,8 +183,22 @@
 <script setup>
 // 首页逻辑（如数据加载）
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import Header from '@/components/Header.vue';
 import Footer from "@/components/Footer.vue";
+
+const searchQuery = ref('');
+const router = useRouter();
+
+const handleSearch = () => {
+  if (searchQuery.value.trim()) {
+    router.push({
+      name: 'SearchResult',
+      query: { keyword: searchQuery.value.trim() }
+    });
+    searchQuery.value = '';
+  }
+};
 
 // 功能模块示例数据
 const featuredModules = ref([
@@ -362,6 +379,8 @@ const formatDuration = (seconds) => {
   const remainingSeconds = seconds % 60;
   return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 };
+
+
 
 </script>
 

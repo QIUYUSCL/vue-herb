@@ -45,11 +45,12 @@ import { ref, computed, onMounted } from 'vue';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import { useRouter } from 'vue-router';
+import Request  from "@/utils/request.js";
+import request from "@/utils/request.js";
+import {ElMessage} from "element-plus";
 
 const router = useRouter();
 
-// 模拟从 API 获取视频数据
-const loading = ref(true);
 const videos = ref([]);
 
 // 过滤出状态正常的视频
@@ -66,46 +67,16 @@ const formatDuration = (seconds) => {
 
 const fetchVideos = async () => {
   try {
-    // 模拟 API 请求延迟
-    await new Promise(resolve => setTimeout(resolve, 100));
-    videos.value = [
-      {
-        video_id: 1,
-        title: '中药材鉴别教程',
-        description: '详细讲解中药材的鉴别方法',
-        // 使用网络视频链接
-        video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-        cover_image: 'https://picsum.photos/300/200?random=1&text=Herb+Identification',
-        duration: 596,
-        category: '中药材鉴别',
-        status: '0',
-        views: 1200,
-        likes: 200,
-        comments: 50,
-        sort: 1,
-        create_time: '2025-06-01 09:00:00'
-      },
-      {
-        video_id: 2,
-        title: '中药炮制方法',
-        description: '介绍常见中药的炮制流程',
-        // 使用网络视频链接
-        video_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-        cover_image: 'https://picsum.photos/300/200?random=2&text=Herb+Processing',
-        duration: 674,
-        category: '中药炮制',
-        status: '0',
-        views: 800,
-        likes: 150,
-        comments: 30,
-        sort: 2,
-        create_time: '2025-06-10 14:30:00'
-      }
-    ];
+    const response = await request.get("/video/selectAll")
+    if(response.code==="200")
+    {
+      videos.value=response.data;
+    }
+    else{
+      ElMessage.error('加载失败,请重试');
+    }
   } catch (error) {
-    console.error('获取视频数据失败:', error);
-  } finally {
-    loading.value = false;
+    ElMessage.error('获取视频数据失败:');
   }
 };
 
@@ -115,5 +86,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 可以添加自定义样式 */
+
 </style>
