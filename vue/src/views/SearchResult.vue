@@ -158,7 +158,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import {ref, onMounted, watch} from 'vue';
 import { useRoute } from 'vue-router';
 import request from '@/utils/request.js';
 import Header from '@/components/Header.vue';
@@ -303,6 +303,16 @@ const searchArticles = async () => {
 
 onMounted(async () => {
   await loadCategories();
+  if (keyword.value) {
+    await searchHerbs();
+    await searchVideos();
+    await searchArticles();
+  }
+});
+
+// 监听路由参数变化
+watch(() => route.query.keyword, async (newKeyword) => {
+  keyword.value = newKeyword || '';
   if (keyword.value) {
     await searchHerbs();
     await searchVideos();

@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/daily")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class DailyController {
 
     @Resource

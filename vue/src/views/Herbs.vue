@@ -204,16 +204,22 @@ const getEfficacyKey = (efficacyName) => {
 };
 
 // 计算属性，用于过滤药材列表
+// 缓存功效映射
+const efficacyMap = computed(generateEfficacyMap);
+
 const filteredHerbs = computed(() => {
   return allHerbs.value.filter(herb => {
+    // 搜索匹配：检查药材名称或功效描述是否包含搜索关键词
     const matchesSearch = herb.herb_name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
         herb.efficacy.toLowerCase().includes(searchQuery.value.toLowerCase());
 
+    // 分类匹配：若分类筛选为 'all' 则全部匹配，否则检查分类 ID 是否一致
     const matchesCategory = categoryFilter.value === 'all' || herb.category_id.toString() === categoryFilter.value;
 
+    // 功效匹配：若功效筛选为 'all' 则全部匹配，否则检查功效关键字是否一致
     const matchesEfficacy = efficacyFilter.value === 'all' || getEfficacyKey(herb.efficacy) === efficacyFilter.value;
 
-    return matchesSearch && matchesCategory && matchesEfficacy && herb.status === '0';
+    return matchesSearch && matchesCategory && matchesEfficacy;
   });
 });
 

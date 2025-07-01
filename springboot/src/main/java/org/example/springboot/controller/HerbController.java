@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequestMapping("/herb")
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class HerbController {
 
     @Resource

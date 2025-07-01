@@ -54,10 +54,8 @@ import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import {Back} from "@element-plus/icons-vue";
 import router from "@/router";
-import Request from "@/utils/request.js";
 import request from "@/utils/request.js";
 import {ElMessage} from "element-plus";
-
 const route = useRoute();
 const video = ref(null);
 

@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-50 min-h-screen">
-<!--   顶部导航栏-->
+    <!-- 顶部导航栏 -->
     <Header />
     <!-- 主要内容区域 -->
     <main class="container mx-auto px-4 py-16 md:py-24">
@@ -14,16 +14,18 @@
           <div class="p-6">
             <form @submit.prevent="handleLogin" class="space-y-4">
               <div>
-                <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+                <!-- 修改标签为用户名 -->
+                <label for="login-username" class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
                 <div class="relative">
                   <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                    <i class="fa fa-envelope-o"></i>
+                    <i class="fa fa-user"></i>
                   </span>
+                  <!-- 修改输入框类型和绑定变量 -->
                   <input
-                      type="email"
-                      id="login-email"
-                      v-model="email"
-                      placeholder="请输入您的邮箱"
+                      type="text"
+                      id="login-username"
+                      v-model="username"
+                      placeholder="请输入您的用户名"
                       class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg input-focus outline-none transition-all duration-300"
                   />
                 </div>
@@ -80,8 +82,8 @@
       </div>
     </main>
 
-<!--    页脚-->
-    <Footer/>
+    <!-- 页脚 -->
+    <Footer />
   </div>
 </template>
 
@@ -91,26 +93,36 @@ import router from '@/router/index.js';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import { ElMessage } from 'element-plus';
+import request from '@/utils/request.js';
 
-const email = ref('');
+// 修改为用户名
+const username = ref('');
 const password = ref('');
 const showPassword = ref(false);
 
 const handleLogin = async () => {
-  if (!email.value || !password.value) {
-    ElMessage.error('邮箱和密码不能为空');
+  if (!username.value || !password.value) {
+    ElMessage.error('用户名和密码不能为空');
     return;
   }
   try {
-    // 模拟登录请求
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    console.log('邮箱:', email.value);
-    console.log('密码:', password.value);
-    // 登录成功后跳转到首页
-    router.push('/user-center');
-    ElMessage.success('登录成功');
+    const response = await request.post('/user/login', {
+      // 使用用户名作为参数
+      username: username.value,
+      password: password.value
+    });
+    if (response.code === "200") {
+      // 登录成功，存储用户信息，跳转到用户中心
+      localStorage.setItem('user_id', response.data.user_id);
+      localStorage.setItem('token', JSON.stringify(response.data));
+      router.push('/user-center');
+      ElMessage.success(response.message);
+    } else {
+      ElMessage.error(response.message);
+    }
   } catch (error) {
     ElMessage.error('登录失败，请稍后重试');
+    console.error('登录请求出错:', error);
   }
 };
 

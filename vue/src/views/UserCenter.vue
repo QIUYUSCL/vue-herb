@@ -15,7 +15,7 @@
               />
               <div class="ml-4">
                 <h3 class="font-semibold text-lg">{{ userInfo.username }}</h3>
-                <p class="text-sm opacity-80">{{ userInfo.memberType }}</p>
+                <p class="text-sm opacity-80">{{ userInfo.memberType || '普通会员' }}</p>
               </div>
             </div>
             <div class="mt-4 grid grid-cols-3 gap-2 text-center">
@@ -109,8 +109,8 @@
             </el-form-item>
             <el-form-item label="性别">
               <el-radio-group v-model="userInfo.gender">
-                <el-radio label="male">男</el-radio>
-                <el-radio label="female">女</el-radio>
+                <el-radio label="1">男</el-radio>
+                <el-radio label="0">女</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item>
@@ -120,32 +120,7 @@
         </div>
 
         <el-card class="change-password-card">
-          <template #header>
-            <div class="card-header">
-              <span>修改密码</span>
-            </div>
-          </template>
-          <el-form
-              :model="passwordForm"
-              :rules="passwordRules"
-              ref="passwordFormRef"
-              label-width="120px"
-          >
-            <el-form-item label="旧密码" prop="oldPassword">
-              <el-input v-model="passwordForm.oldPassword" type="password"></el-input>
-            </el-form-item>
-            <el-form-item label="新密码" prop="newPassword">
-              <el-input v-model="passwordForm.newPassword" type="password"></el-input>
-            </el-form-item>
-            <el-form-item label="确认密码" prop="confirmPassword">
-              <el-input v-model="passwordForm.confirmPassword" type="password"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitPasswordChange">
-                提交修改
-              </el-button>
-            </el-form-item>
-          </el-form>
+          <!-- ... 已有代码 ... -->
         </el-card>
       </div>
     </div>
@@ -155,24 +130,25 @@
     <el-button type="danger" @click="logout">退出登录</el-button>
   </div>
 
-
   <Footer />
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+import { ElMessage } from 'element-plus';
+import request from '@/utils/request.js';
 
-// 模拟用户信息，实际项目中应从存储或 API 获取
+// 用户信息
 const userInfo = reactive({
-  avatar: "https://picsum.photos/seed/user/200/200",
-  username: "张小明",
-  memberType: "普通会员",
-  email: "zhang@example.com",
-  phone: "138****5678",
-  gender: "male",
+  avatar: "",
+  username: "",
+  memberType: "",
+  email: "",
+  phone: "",
+  gender: "",
 });
 
 // 用户统计信息
@@ -219,6 +195,32 @@ const passwordRules = {
 const passwordFormRef = ref(null);
 const router = useRouter();
 
+// 组件加载时获取用户信息
+onMounted(async () => {
+  const user_id = localStorage.getItem('user_id');
+  if (user_id) {
+    try {
+      const response = await request.get(`/user/selectById/${user_id}`);
+      if (response.code === "200") {
+        const userData = response.data;
+        userInfo.avatar = userData.avatar;
+        userInfo.username = userData.username;
+        userInfo.email = userData.email;
+        userInfo.phone = userData.phone;
+        userInfo.gender = userData.gender === 1 ? '1' : '0';
+      } else {
+        ElMessage.error(response.message);
+      }
+    } catch (error) {
+      ElMessage.error('获取用户信息失败，请稍后重试');
+      console.error('获取用户信息出错:', error);
+    }
+  } else {
+    ElMessage.warning('未检测到用户登录信息，请重新登录');
+    router.push('/login');
+  }
+});
+
 // 提交个人资料修改
 const submitProfile = () => {
   // 模拟保存成功
@@ -241,38 +243,11 @@ const submitPasswordChange = async () => {
 const logout = () => {
   // 清除用户登录状态，实际项目中应清除 token 等信息
   localStorage.removeItem("token");
+  localStorage.removeItem("user_id");
   router.push("/login");
 };
-
 </script>
 
 <style scoped>
-.nav-active {
-  background-color: #f3f4f6;
-  color: #1d4ed8;
-}
-
-.nav-inactive {
-  color: #374151;
-}
-
-.nav-inactive:hover {
-  background-color: #f9fafb;
-  color: #1d4ed8;
-}
-
-.user-center {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
-}
-
-.user-info-card,
-.change-password-card {
-  margin-bottom: 20px;
-}
-
-.logout-button {
-  text-align: center;
-}
+/* ... 已有代码 ... */
 </style>

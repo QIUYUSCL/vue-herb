@@ -64,10 +64,11 @@ const searchQuery = ref('');
 // 处理搜索逻辑
 const handleSearch = async () => {
   if (searchQuery.value.trim()) {
+    console.log('搜索关键词:', searchQuery.value.trim());
     // 跳转到搜索结果页面并携带关键词
     router.push({
       name: 'SearchResult',
-      query: { keyword: searchQuery.value.trim() }
+      query: {keyword: searchQuery.value.trim()}
     });
     // 搜索完成后恢复显示搜索图标
     showSearchIcon.value = true;

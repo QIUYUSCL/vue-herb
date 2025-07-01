@@ -39,6 +39,18 @@ public class Result {
         return result;
     }
 
+    public static Result error(int code, String msg) {
+        return error(String.valueOf(code), msg);
+    }
+
+    public static Result success(String msg, Object data) {
+        Result result = new Result();
+        result.setCode("200");
+        result.setMsg(msg);
+        result.setData(data);
+        return result;
+    }
+
     public String getCode() {
         return code;
     }
