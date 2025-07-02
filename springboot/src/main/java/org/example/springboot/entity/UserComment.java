@@ -38,7 +38,7 @@ public class UserComment {
         this.user_id = user_id;
     }
 
-    public String getTargetType() {
+    public String getTarget_type() {
         return target_type;
     }
 

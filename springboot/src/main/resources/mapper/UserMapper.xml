@@ -99,4 +99,24 @@
         VALUES (#{user_id}, #{target_type}, #{target_id}, NOW())
     </insert>
 
+    <insert id="insertUserComment" parameterType="org.example.springboot.entity.UserComment">
+        INSERT INTO user_comment (user_id, target_type, target_id, parent_id, content, status, create_time)
+        VALUES (#{user_id}, #{target_type}, #{target_id}, #{parent_id}, #{content}, COALESCE(#{status}, '0'), NOW())
+    </insert>
+
+    <update id="updateCommentsCount" parameterType="map">
+        <choose>
+            <when test="targetType == 'VIDEO'">
+                UPDATE video_info
+                SET comments = comments + 1
+                WHERE video_id = #{targetId}
+            </when>
+            <when test="targetType == 'ARTICLE'">
+                UPDATE daily_learning
+                SET comments = comments + 1
+                WHERE article_id = #{targetId}
+            </when>
+        </choose>
+    </update>
+
 </mapper>

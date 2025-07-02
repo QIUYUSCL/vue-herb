@@ -82,5 +82,9 @@ public interface UserMapper {
 
     int hasViewedToday(@Param("params") Map<String, Object> params);
     int insertUserHistory(UserHistory userHistory);
+    int insertUserComment(UserComment userComment);
+
+    int updateCommentsCount(@Param("targetType") String targetType, @Param("targetId") int targetId);
+
 
 }

@@ -81,3 +81,45 @@ export const handleInteraction = async (targetId, targetType, actionType, target
         ElMessage.error(`${actionType === 'LIKE' ? '点赞' : '收藏'}失败，请稍后重试，错误信息：` + error.message);
     }
 };
+
+/**
+ * 提交评论
+ * @param {Object} target - 目标对象，包含视频或文章数据
+ * @param {string} targetType - 目标类型，如 'VIDEO', 'ARTICLE'
+ * @param {ref} commentContent - 评论内容的响应式引用
+ * @param {ref} showCommentInput - 控制评论输入框显示状态的响应式引用
+ * @returns {Promise<void>}
+ */
+export const submitComment = async (target, targetType, commentContent, showCommentInput) => {
+    const userId = parseInt(localStorage.getItem('user_id'));
+    if (isNaN(userId)) {
+        ElMessage.warning('请先登录');
+        return;
+    }
+    if (!commentContent.value.trim()) {
+        ElMessage.warning('请输入评论内容');
+        return;
+    }
+
+    try {
+        const commentData = {
+            user_id: userId,
+            target_type: targetType,
+            target_id: target.value[targetType === 'VIDEO' ? 'video_id' : 'article_id'],
+            parent_id: 0,
+            content: commentContent.value.trim()
+        };
+
+        const response = await request.post('/interaction/addComment', commentData);
+        if (response.code === '200') {
+            ElMessage.success('评论发表成功');
+            target.value.comments += 1;
+            showCommentInput.value = false;
+            commentContent.value = '';
+        } else {
+            ElMessage.error('评论发表失败');
+        }
+    } catch (error) {
+        ElMessage.error('评论发表失败，请稍后重试');
+    }
+};

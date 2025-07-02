@@ -16,8 +16,7 @@
     </div>
     <div class="container mx-auto px-4 py-8">
       <el-button type="success" round :icon="Back" @click="goBack" class="mb-4" />
-      <div v-if="loading" class="text-center text-gray-600">加载中...</div>
-      <div v-else-if="video" class="video-detail bg-white p-6 rounded-lg shadow-md">
+      <div v-if="video" class="video-detail bg-white p-6 rounded-lg shadow-md">
         <!-- 视频播放器 -->
         <video
             :src="video.video_url"
@@ -38,8 +37,13 @@
           <span class="ml-1 text-sm text-gray-600">{{ video.likes }} 点赞</span>
           <i class="fa fa-bookmark text-gray-600 ml-4" @click="handleCollect(video.video_id)"></i>
           <span class="ml-1 text-sm text-gray-600">{{ video.collections}} 收藏</span>
-          <i class="fa fa-comment text-gray-600 ml-4"></i>
+          <i class="fa fa-comment text-gray-600 ml-4" @click="showCommentInput = true"></i>
           <span class="ml-1 text-sm text-gray-600">{{ video.comments }} 评论</span>
+        </div>
+        <div v-if="showCommentInput" class="mt-4">
+          <textarea v-model="commentContent" rows="3" class="w-full border border-gray-300 p-2 rounded"></textarea>
+          <button @click="handleSubmitComment" class="mt-2 bg-primary text-white p-2 rounded">发表评论</button>
+          <button @click="showCommentInput = false" class="mt-2 ml-2 bg-gray-300 p-2 rounded">取消</button>
         </div>
         <p class="text-sm text-gray-600">创建时间: {{ video.create_time }}</p>
       </div>
@@ -56,12 +60,14 @@ import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import {Back} from "@element-plus/icons-vue";
 import router from "@/router";
-import request from "@/utils/request.js";
 import {ElMessage} from "element-plus";
-import {handleInteraction, handleView} from "@/utils/interactions.js";
+import {handleInteraction, handleView, submitComment} from "@/utils/interactions.js";
 import {commonRequest} from "@/utils/commonRequest.js";
+
 const route = useRoute();
 const video = ref(null);
+const showCommentInput = ref(false);
+const commentContent = ref('');
 
 
 // 将时长从秒转换为 分:秒 格式
@@ -93,6 +99,10 @@ const handleLike = async () => {
 
 const handleCollect = async () => {
   await handleInteraction(video.value.video_id, 'VIDEO', 'COLLECT', video.value);
+};
+
+const handleSubmitComment = async () => {
+  await submitComment(video, 'VIDEO', commentContent, showCommentInput);
 };
 
 onMounted(() => {

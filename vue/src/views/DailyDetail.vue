@@ -37,8 +37,13 @@
           <span class="ml-1 text-sm text-gray-600">{{ article.likes }} 点赞</span>
           <i class="fa fa-bookmark text-gray-600 ml-4" @click="handleCollect(article.article_id)"></i>
           <span class="ml-1 text-sm text-gray-600">{{ article.collections }} 收藏</span>
-          <i class="fa fa-comment text-gray-600 ml-4"></i>
+          <i class="fa fa-comment text-gray-600 ml-4" @click="showCommentInput = true"></i>
           <span class="ml-1 text-sm text-gray-600">{{ article.comments }} 评论</span>
+        </div>
+        <div v-if="showCommentInput" class="mt-4">
+          <textarea v-model="commentContent" rows="3" class="w-full border border-gray-300 p-2 rounded"></textarea>
+          <button @click="handleSubmitComment" class="mt-2 bg-primary text-white p-2 rounded">发表评论</button>
+          <button @click="showCommentInput = false" class="mt-2 ml-2 bg-gray-300 p-2 rounded">取消</button>
         </div>
       </div>
       <div v-else class="text-center py-12">
@@ -64,6 +69,8 @@ import {commonRequest} from "@/utils/commonRequest.js";
 const route = useRoute();
 const router = useRouter();
 const article = ref(null);
+const showCommentInput = ref(false);
+const commentContent = ref('');
 
 // 格式化日期函数
 const formatDate = (dateString) => {
@@ -90,6 +97,10 @@ const handleLike = async () => {
 
 const handleCollect = async () => {
   await handleInteraction(article.value.article_id, 'ARTICLE', 'COLLECT', article.value);
+};
+
+const handleSubmitComment = async () => {
+  await submitComment(article, 'ARTICLE', commentContent, showCommentInput);
 };
 
 onMounted(() => {
