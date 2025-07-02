@@ -23,25 +23,28 @@
           <!-- 使用 grid 布局，每行显示三个数据 -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div
-                v-for="item in group"
-                :key="item.create_time"
-                class="bg-white rounded-xl overflow-hidden shadow-md card-hover p-4 cursor-pointer"
-                @click="navigateToDetail(item.target_type, item.target_id)"
+              v-for="item in group"
+              :key="item.createTime"
+              class="bg-white rounded-xl overflow-hidden shadow-md card-hover p-4 cursor-pointer"
+              @click="navigateToDetail(item.target_type, item.target_id)"
             >
               <div v-if="item.target_type === 'HERB'">
-                <p class="text-sm text-gray-600 mb-1">药材浏览记录</p>
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">药材 ID: {{ item.target_id }}</h3>
-                <p class="text-sm text-gray-600">浏览时间: {{ formatDate(item.create_time) }}</p>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ herbInfoMap[item.target_id]?.herb_name || '药材名称加载中...' }}</h3>
+                <p class="text-sm text-gray-600">功效: {{ herbInfoMap[item.target_id]?.efficacy || '功效加载中...' }}</p>
+                <!-- 修改为 createTime -->
+                <p class="text-sm text-gray-600">浏览时间: {{ formatDate(item.createTime) }}</p>
               </div>
               <div v-if="item.target_type === 'VIDEO'">
-                <p class="text-sm text-gray-600 mb-1">视频浏览记录</p>
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">视频 ID: {{ item.target_id }}</h3>
-                <p class="text-sm text-gray-600">浏览时间: {{ formatDate(item.create_time) }}</p>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ videoInfoMap[item.target_id]?.title || '视频标题加载中...' }}</h3>
+                <p class="text-sm text-gray-600">描述: {{ videoInfoMap[item.target_id]?.description || '描述加载中...' }}</p>
+                <!-- 修改为 createTime -->
+                <p class="text-sm text-gray-600">浏览时间: {{ formatDate(item.createTime) }}</p>
               </div>
               <div v-if="item.target_type === 'ARTICLE'">
-                <p class="text-sm text-gray-600 mb-1">每日一学浏览记录</p>
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">文章 ID: {{ item.target_id }}</h3>
-                <p class="text-sm text-gray-600">浏览时间: {{ formatDate(item.create_time) }}</p>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ articleInfoMap[item.target_id]?.title || '文章标题加载中...' }}</h3>
+                <p class="text-sm text-gray-600">内容: {{ articleInfoMap[item.target_id]?.content?.substring(0, 100) || '内容加载中...' }}...</p>
+                <!-- 修改为 createTime -->
+                <p class="text-sm text-gray-600">浏览时间: {{ formatDate(item.createTime) }}</p>
               </div>
             </div>
           </div>
@@ -66,18 +69,53 @@ import { ElMessage } from 'element-plus';
 
 const router = useRouter();
 const history = ref([]);
+// 存储详细信息
+const herbInfoMap = ref({});
+const videoInfoMap = ref({});
+const articleInfoMap = ref({});
 
 const formatDate = (dateString) => {
   return new Date(dateString).toLocaleString();
 };
+
 
 const fetchHistory = async () => {
   const user_id = localStorage.getItem('user_id');
   if (user_id) {
     try {
       const response = await request.get(`/user/history/${user_id}`);
+      console.log('获取浏览历史响应数据:', response);
       if (response.code === '200') {
         history.value = response.data;
+        // 获取每种类型的详细信息
+        await Promise.all(history.value.map(async (item) => {
+          switch (item.target_type) {
+            case 'HERB':
+              if (!herbInfoMap.value[item.target_id]) {
+                const herbResponse = await request.get(`/herb/info/selectById/${item.target_id}`);
+                if (herbResponse.code === '200') {
+                  herbInfoMap.value[item.target_id] = herbResponse.data;
+                }
+              }
+              break;
+            case 'VIDEO':
+              if (!videoInfoMap.value[item.target_id]) {
+                const videoResponse = await request.get(`/video/selectById/${item.target_id}`);
+                if (videoResponse.code === '200') {
+                  videoInfoMap.value[item.target_id] = videoResponse.data;
+                }
+              }
+              break;
+            case 'ARTICLE':
+              if (!articleInfoMap.value[item.target_id]) {
+                const articleResponse = await request.get(`/daily/selectById/${item.target_id}`);
+                if (articleResponse.code === '200') {
+                  articleInfoMap.value[item.target_id] = articleResponse.data;
+                }
+              }
+              break;
+          }
+        }));
       } else {
         ElMessage.error(response.message);
       }

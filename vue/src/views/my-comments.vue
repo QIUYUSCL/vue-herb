@@ -23,14 +23,18 @@
           <!-- 使用 grid 布局，每行显示三个数据 -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div
-                v-for="comment in group"
-                :key="comment.comment_id"
-                class="bg-white rounded-xl overflow-hidden shadow-md card-hover p-4 cursor-pointer"
-                @click="navigateToDetail(comment.target_type, comment.target_id)"
+              v-for="comment in group"
+              :key="comment.comment_id"
+              class="bg-white rounded-xl overflow-hidden shadow-md card-hover p-4 cursor-pointer"
+              @click="navigateToDetail(comment.target_type, comment.target_id)"
             >
-              <p class="text-sm text-gray-600 mb-1">评论内容</p>
+              <!-- 目标标题放在最上面并加粗显示 -->
+              <h4 class="text-lg font-bold text-gray-800 mb-2">
+                {{ getTargetTitle(comment.target_type, comment.target_id) }}
+              </h4>
+              <p class="text-sm text-gray-600 mb-1">评论内容：</p>
               <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ comment.content }}</h3>
-              <p class="text-sm text-gray-600">评论时间: {{ formatDate(comment.create_time) }}</p>
+              <p class="text-sm text-gray-600">评论时间: {{ formatDate(comment.createTime) }}</p>
             </div>
           </div>
         </div>
@@ -54,6 +58,9 @@ import { ElMessage } from 'element-plus';
 
 const router = useRouter();
 const comments = ref([]);
+const herbInfoMap = ref({});
+const videoInfoMap = ref({});
+const articleInfoMap = ref({});
 
 const formatDate = (dateString) => {
   return new Date(dateString).toLocaleString();
@@ -64,8 +71,14 @@ const fetchComments = async () => {
   if (user_id) {
     try {
       const response = await request.get(`/user/comments/${user_id}`);
+      console.log('获取评论的完整响应数据:', response);
       if (response.code === '200') {
         comments.value = response.data;
+        comments.value.forEach(comment => {
+          console.log('评论内容:', comment.content);
+          console.log('评论时间:', comment.createTime);
+          fetchTargetInfo(comment.target_type, comment.target_id);
+        });
       } else {
         ElMessage.error(response.message);
       }
@@ -76,6 +89,63 @@ const fetchComments = async () => {
   } else {
     ElMessage.warning('未检测到用户登录信息，请重新登录');
     router.push('/login');
+  }
+};
+
+const fetchTargetInfo = async (targetType, targetId) => {
+  switch (targetType) {
+    case 'HERB':
+      if (!herbInfoMap.value[targetId]) {
+        try {
+          const herbResponse = await request.get(`/herb/info/selectById/${targetId}`);
+          if (herbResponse.code === '200') {
+            herbInfoMap.value[targetId] = herbResponse.data;
+          }
+        } catch (error) {
+          ElMessage.error(`获取药材 ${targetId} 信息失败，请稍后重试`);
+          console.error(`获取药材 ${targetId} 信息出错:`, error);
+        }
+      }
+      break;
+    case 'VIDEO':
+      if (!videoInfoMap.value[targetId]) {
+        try {
+          const videoResponse = await request.get(`/video/selectById/${targetId}`);
+          if (videoResponse.code === '200') {
+            videoInfoMap.value[targetId] = videoResponse.data;
+          }
+        } catch (error) {
+          ElMessage.error(`获取视频 ${targetId} 信息失败，请稍后重试`);
+          console.error(`获取视频 ${targetId} 信息出错:`, error);
+        }
+      }
+      break;
+    case 'ARTICLE':
+      if (!articleInfoMap.value[targetId]) {
+        try {
+          const articleResponse = await request.get(`/daily/selectById/${targetId}`);
+          if (articleResponse.code === '200') {
+            articleInfoMap.value[targetId] = articleResponse.data;
+          }
+        } catch (error) {
+          ElMessage.error(`获取文章 ${targetId} 信息失败，请稍后重试`);
+          console.error(`获取文章 ${targetId} 信息出错:`, error);
+        }
+      }
+      break;
+  }
+};
+
+const getTargetTitle = (targetType, targetId) => {
+  switch (targetType) {
+    case 'HERB':
+      return herbInfoMap.value[targetId]?.herb_name || '药材名称加载中...';
+    case 'VIDEO':
+      return videoInfoMap.value[targetId]?.title || '视频标题加载中...';
+    case 'ARTICLE':
+      return articleInfoMap.value[targetId]?.title || '文章标题加载中...';
+    default:
+      return '未知目标类型';
   }
 };
 
