@@ -140,4 +140,16 @@ public class UserController {
         return Result.success("获取用户收藏记录成功", collections);
     }
 
+    /**
+     * 根据目标类型和目标 ID 查询评论，并获取评论用户的用户名和头像
+     * @param targetType 目标类型
+     * @param targetId 目标 ID
+     * @return 包含评论信息、用户名和头像的评论列表
+     */
+    @GetMapping("/comments/withUserInfo")
+    public Result getCommentsWithUserInfo(@RequestParam String targetType, @RequestParam int targetId) {
+        List<Map<String, Object>> comments = userService.getCommentsWithUserInfo(targetType, targetId);
+        return Result.success("获取评论成功", comments);
+    }
+
 }

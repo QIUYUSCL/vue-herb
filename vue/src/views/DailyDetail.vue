@@ -61,9 +61,8 @@ import { useRoute, useRouter } from 'vue-router';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import { Back } from "@element-plus/icons-vue";
-import request from "@/utils/request.js";
 import {ElMessage} from "element-plus";
-import {handleInteraction, handleView} from "@/utils/interactions.js";
+import {handleInteraction, handleView, submitComment} from "@/utils/interactions.js";
 import {commonRequest} from "@/utils/commonRequest.js";
 
 const route = useRoute();

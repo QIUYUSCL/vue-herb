@@ -6,6 +6,7 @@ import org.example.springboot.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -80,6 +81,11 @@ public class UserService {
      */
     public List<UserInteraction> getUserCollectionsByUserId(int userId) {
         return userMapper.getUserCollectionsByUserId(userId);
+    }
+
+
+    public List<Map<String, Object>> getCommentsWithUserInfo(String targetType, int targetId) {
+        return userMapper.getCommentsWithUserInfo(targetType, targetId);
     }
 
 }

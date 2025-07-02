@@ -40,12 +40,26 @@
           <i class="fa fa-comment text-gray-600 ml-4" @click="showCommentInput = true"></i>
           <span class="ml-1 text-sm text-gray-600">{{ video.comments }} 评论</span>
         </div>
-        <div v-if="showCommentInput" class="mt-4">
+        <div v-if="showCommentInput" class="mt-4 relative">
           <textarea v-model="commentContent" rows="3" class="w-full border border-gray-300 p-2 rounded"></textarea>
           <button @click="handleSubmitComment" class="mt-2 bg-primary text-white p-2 rounded">发表评论</button>
+          <button @click="toggleShowAllComments" class="mt-2 ml-2 bg-gray-300 p-2 rounded absolute right-0 bottom-0">
+            {{ showAllComments ? '隐藏评论' : '查看所有评论' }}
+          </button>
           <button @click="showCommentInput = false" class="mt-2 ml-2 bg-gray-300 p-2 rounded">取消</button>
         </div>
-        <p class="text-sm text-gray-600">创建时间: {{ video.create_time }}</p>
+        <div v-if="showAllComments" class="mt-4">
+          <h3 class="text-lg font-bold text-gray-800 mb-2">所有评论</h3>
+          <div v-if="comments.length > 0">
+            <div v-for="comment in comments" :key="comment.comment_id" class="bg-white p-4 rounded-lg shadow-sm mb-4">
+              <img :src="comment.avatar" alt="用户头像" class="w-8 h-8 rounded-full mb-2">
+              <p class="font-semibold">{{ comment.username }}</p>
+              <p class="text-gray-600">{{ comment.content }}</p>
+              <p class="text-sm text-gray-500">{{ formatDate(comment.create_time) }}</p>
+            </div>
+          </div>
+          <div v-else class="text-center text-gray-500">暂无评论记录</div>
+        </div>
       </div>
       <div v-else class="text-center text-gray-600">未找到该视频信息</div>
     </div>
@@ -61,13 +75,15 @@ import Footer from '@/components/Footer.vue';
 import {Back} from "@element-plus/icons-vue";
 import router from "@/router";
 import {ElMessage} from "element-plus";
-import {handleInteraction, handleView, submitComment} from "@/utils/interactions.js";
+import {fetchComments, handleInteraction, handleView, submitComment} from "@/utils/interactions.js";
 import {commonRequest} from "@/utils/commonRequest.js";
 
 const route = useRoute();
 const video = ref(null);
 const showCommentInput = ref(false);
 const commentContent = ref('');
+const showAllComments = ref(false);
+const comments = ref([]);
 
 
 // 将时长从秒转换为 分:秒 格式
@@ -75,6 +91,23 @@ const formatDuration = (seconds) => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
   return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+};
+
+// 格式化日期函数
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleString();
+};
+
+const toggleShowAllComments = async () => {
+  if (!showAllComments.value) {
+    try {
+      await fetchComments('VIDEO', video.value.video_id, comments);
+      console.log('获取到的评论:', comments.value);
+    } catch (error) {
+      ElMessage.error('获取评论失败，请稍后重试');
+    }
+  }
+  showAllComments.value = !showAllComments.value;
 };
 
 

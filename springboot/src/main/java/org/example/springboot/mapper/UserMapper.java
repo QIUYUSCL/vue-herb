@@ -86,5 +86,7 @@ public interface UserMapper {
 
     int updateCommentsCount(@Param("targetType") String targetType, @Param("targetId") int targetId);
 
+    List<Map<String, Object>> getCommentsWithUserInfo(@Param("targetType") String targetType, @Param("targetId") int targetId);
+
 
 }

@@ -123,3 +123,29 @@ export const submitComment = async (target, targetType, commentContent, showComm
         ElMessage.error('评论发表失败，请稍后重试');
     }
 };
+
+/**
+ * 获取评论
+ * @param {string} targetType - 目标类型，如 'HERB', 'VIDEO', 'ARTICLE'
+ * @param {number} targetId - 目标 ID
+ * @param {ref} comments - 用于存储评论的响应式引用
+ * @returns {Promise<void>}
+ */
+export const fetchComments = async (targetType, targetId, comments) => {
+    try {
+        const response = await request.get('/user/comments/withUserInfo', {
+            params: {
+                targetType,
+                targetId
+            }
+        });
+        if (response.code === "200") {
+            comments.value = response.data;
+        } else {
+            ElMessage.error(response.message);
+        }
+    } catch (error) {
+        ElMessage.error('获取评论记录失败，请稍后重试');
+        console.error('获取评论记录出错:', error);
+    }
+};

@@ -119,4 +119,28 @@
         </choose>
     </update>
 
+
+    <select id="getCommentsWithUserInfo" resultType="java.util.Map">
+        SELECT
+            uc.comment_id,
+            uc.user_id,
+            uc.target_type,
+            uc.target_id,
+            uc.parent_id,
+            uc.content,
+            uc.create_time,
+            ui.username,
+            ui.avatar
+        FROM
+            user_comment uc
+                JOIN
+            user_info ui ON uc.user_id = ui.user_id
+        WHERE
+            uc.target_type = #{targetType}
+          AND uc.target_id = #{targetId}
+          AND uc.status = '0'
+        ORDER BY
+            uc.create_time DESC
+    </select>
+
 </mapper>
