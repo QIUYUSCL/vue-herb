@@ -6,13 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="94ae4c3b-50de-4621-aa99-7260aabd054f" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/utils/commonRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/utils/commonRequest.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/src/utils/interactions.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/utils/interactions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/src/views/DailyDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/DailyDetail.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/Login.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/src/views/VideoDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/VideoDetail.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/browsing-history.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/browsing-history.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/my-collections.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/my-collections.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/~$库说明表 (1).docx" beforeDir="false" afterPath="$PROJECT_DIR$/vue/~$库说明表 (1).docx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +132,8 @@
       <workItem from="1751364031256" duration="4897000" />
       <workItem from="1751419486995" duration="2638000" />
       <workItem from="1751422153164" duration="3748000" />
-      <workItem from="1751425931714" duration="15518000" />
+      <workItem from="1751425931714" duration="15818000" />
+      <workItem from="1751450476216" duration="10819000" />
     </task>
     <servers />
   </component>

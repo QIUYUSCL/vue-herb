@@ -133,14 +133,15 @@
             ui.avatar
         FROM
             user_comment uc
-                JOIN
-            user_info ui ON uc.user_id = ui.user_id
+                JOIN user_info ui ON uc.user_id = ui.user_id
         WHERE
             uc.target_type = #{targetType}
           AND uc.target_id = #{targetId}
-          AND uc.status = '0'
         ORDER BY
-            uc.create_time DESC
+            -- 先按父评论排序，再按创建时间排序
+            CASE WHEN uc.parent_id = 0 THEN uc.comment_id ELSE uc.parent_id END,
+            uc.create_time
     </select>
+
 
 </mapper>

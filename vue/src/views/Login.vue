@@ -118,7 +118,7 @@ const handleLogin = async () => {
       router.push('/user-center');
       ElMessage.success('登录成功');
     } else {
-      ElMessage.error(response.message);
+      ElMessage.error('登录失败，请检查用户名和密码');
     }
   } catch (error) {
     ElMessage.error('登录失败，请稍后重试');

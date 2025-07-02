@@ -149,3 +149,43 @@ export const fetchComments = async (targetType, targetId, comments) => {
         console.error('获取评论记录出错:', error);
     }
 };
+
+/**
+ * 提交回复评论
+ * @param {string} targetType - 目标类型，如 'HERB', 'VIDEO', 'ARTICLE'
+ * @param {number} targetId - 目标 ID
+ * @param {number} parentId - 父评论 ID
+ * @param {string} content - 回复内容
+ * @returns {Promise<void>}
+ */
+export const submitReplyComment = async (targetType, targetId, parentId, content) => {
+    const userId = parseInt(localStorage.getItem('user_id'));
+    if (isNaN(userId)) {
+        ElMessage.warning('请先登录');
+        return;
+    }
+    if (!content.trim()) {
+        ElMessage.warning('请输入回复内容');
+        return;
+    }
+
+    try {
+        const commentData = {
+            user_id: userId,
+            target_type: targetType,
+            target_id: targetId,
+            parent_id: parentId,
+            content: content.trim(),
+            status: '0'
+        };
+
+        const response = await request.post('/interaction/addComment', commentData);
+        if (response.code === '200') {
+            ElMessage.success('回复发表成功');
+        } else {
+            ElMessage.error('回复发表失败');
+        }
+    } catch (error) {
+        ElMessage.error('回复发表失败，请稍后重试');
+    }
+};

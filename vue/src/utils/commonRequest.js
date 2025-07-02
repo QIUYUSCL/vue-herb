@@ -45,6 +45,7 @@ export const commonRequest = async (type, action, params = {}) => {
                 config.params = { keyword: params.keyword };
             }
             break;
+
         default:
             ElMessage.error('不支持的目标类型');
             return Promise.reject(new Error('不支持的目标类型'));

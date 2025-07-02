@@ -14,34 +14,55 @@
     <!-- 主要内容区域 -->
     <main class="container mx-auto px-4 py-8">
       <h2 class="text-2xl font-bold text-gray-800 mb-6">我的收藏</h2>
-      <div v-if="collections.length > 0">
-        <div v-for="collection in collections" :key="collection.interaction_id" class="bg-white rounded-xl overflow-hidden shadow-md card-hover p-4 mb-4">
-          <p class="text-sm text-gray-600 mb-1">收藏类型: {{ collection.target_type }}</p>
-          <p class="text-sm text-gray-600 mb-1">收藏目标 ID: {{ collection.target_id }}</p>
-          <div v-if="collection.target_type === 'HERB' && collectionHerbInfo[collection.target_id]">
-            <div class="relative">
-              <img :src="collectionHerbInfo[collection.target_id].image_url" :alt="collectionHerbInfo[collection.target_id].herb_name" class="w-full h-48 object-cover">
-              <div class="absolute top-2 left-2">
-                <span
-                    :class="categoryColors[getCategoryName(collectionHerbInfo[collection.target_id].category_id)] + ' text-xs px-2 py-1 rounded-full'"
-                >{{ getCategoryName(collectionHerbInfo[collection.target_id].category_id) }}</span>
+      <div v-if="groupedCollections.length > 0">
+        <div v-for="(group, index) in groupedCollections" :key="index">
+          <!-- 根据 target_type 显示对应的标题 -->
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">
+            {{ getTypeName(group[0].target_type) }} 收藏
+          </h3>
+          <!-- 使用 grid 布局，每行显示三个数据 -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div
+              v-for="collection in group"
+              :key="collection.interaction_id"
+              class="bg-white rounded-xl overflow-hidden shadow-md card-hover p-4 cursor-pointer"
+              @click="navigateToDetail(collection.target_type, collection.target_id)"
+            >
+              <div v-if="collection.target_type === 'HERB' && collectionHerbInfo[collection.target_id]">
+                <div class="relative">
+                  <img :src="collectionHerbInfo[collection.target_id].image_url" :alt="collectionHerbInfo[collection.target_id].herb_name" class="w-full h-48 object-cover">
+                  <div class="absolute top-2 left-2">
+                    <span
+                      :class="categoryColors[getCategoryName(collectionHerbInfo[collection.target_id].category_id)] + ' text-xs px-2 py-1 rounded-full'"
+                    >{{ getCategoryName(collectionHerbInfo[collection.target_id].category_id) }}</span>
+                  </div>
+                  <div class="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1 text-sm font-medium text-primary">
+                    <i class="fa fa-star text-yellow-400"></i> 0
+                  </div>
+                </div>
+                <div class="p-4">
+                  <p class="text-sm text-gray-600 mb-1">{{ collectionHerbInfo[collection.target_id].pinyin }}</p>
+                  <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ collectionHerbInfo[collection.target_id].herb_name }}</h3>
+                  <div class="flex items-center space-x-2">
+                    <span
+                      :class="efficacyColors[getEfficacyKey(collectionHerbInfo[collection.target_id].efficacy)] + ' text-xs px-2 py-1 rounded-full'"
+                    >{{ collectionHerbInfo[collection.target_id].efficacy }}</span>
+                  </div>
+                </div>
               </div>
-              <div class="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1 text-sm font-medium text-primary">
-                <i class="fa fa-star text-yellow-400"></i> 0
+              <div v-else-if="collection.target_type === 'HERB' && !collectionHerbInfo[collection.target_id]">
+                <p class="text-gray-500">加载药材信息中...</p>
+              </div>
+              <!-- 这里可以添加 VIDEO 和 ARTICLE 类型的显示逻辑 -->
+              <div v-if="collection.target_type === 'VIDEO'">
+                <!-- 视频显示逻辑，可根据实际需求完善 -->
+                <p>视频收藏内容，ID: {{ collection.target_id }}</p>
+              </div>
+              <div v-if="collection.target_type === 'ARTICLE'">
+                <!-- 每日一学显示逻辑，可根据实际需求完善 -->
+                <p>每日一学收藏内容，ID: {{ collection.target_id }}</p>
               </div>
             </div>
-            <div class="p-4">
-              <p class="text-sm text-gray-600 mb-1">{{ collectionHerbInfo[collection.target_id].pinyin }}</p>
-              <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ collectionHerbInfo[collection.target_id].herb_name }}</h3>
-              <div class="flex items-center space-x-2">
-                <span
-                    :class="efficacyColors[getEfficacyKey(collectionHerbInfo[collection.target_id].efficacy)] + ' text-xs px-2 py-1 rounded-full'"
-                >{{ collectionHerbInfo[collection.target_id].efficacy }}</span>
-              </div>
-            </div>
-          </div>
-          <div v-else-if="collection.target_type === 'HERB' && !collectionHerbInfo[collection.target_id]">
-            <p class="text-gray-500">加载药材信息中...</p>
           </div>
         </div>
       </div>
@@ -55,12 +76,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import request from '@/utils/request.js';
 import { ElMessage } from 'element-plus';
-import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const collections = ref([]);
@@ -116,7 +137,7 @@ const categories = ref([]);
 const loadCategories = async () => {
   try {
     const response = await request.get('/herb/category/selectAll');
-    if (response.code === '200') {
+    if (response.code === "200") {
       categories.value = response.data;
     } else {
       ElMessage.error('药材种类数据加载失败，请稍后重试');
@@ -132,14 +153,14 @@ const fetchCollections = async () => {
   if (user_id) {
     try {
       const response = await request.get(`/user/collections/${user_id}`);
-      if (response.code === '200') {
+      if (response.code === "200") {
         collections.value = response.data;
         // 遍历收藏记录，获取药材信息
         for (const collection of collections.value) {
           if (collection.target_type === 'HERB') {
             try {
               const herbResponse = await request.get(`/herb/info/selectById/${collection.target_id}`);
-              if (herbResponse.code === '200') {
+              if (herbResponse.code === "200") {
                 collectionHerbInfo.value[collection.target_id] = herbResponse.data;
               }
             } catch (error) {
@@ -158,6 +179,50 @@ const fetchCollections = async () => {
   } else {
     ElMessage.warning('未检测到用户登录信息，请重新登录');
     router.push('/login');
+  }
+};
+
+// 对收藏数据进行分组
+const groupedCollections = computed(() => {
+  const groups = {};
+  collections.value.forEach(collection => {
+    if (!groups[collection.target_type]) {
+      groups[collection.target_type] = [];
+    }
+    groups[collection.target_type].push(collection);
+  });
+  return Object.values(groups);
+});
+
+// 根据 target_type 获取显示名称
+const getTypeName = (type) => {
+  switch (type) {
+    case 'HERB':
+      return '药材';
+    case 'VIDEO':
+      return '视频';
+    case 'ARTICLE':
+      return '每日一学';
+    default:
+      return type;
+  }
+};
+
+// 跳转详情页方法
+const navigateToDetail = (targetType, targetId) => {
+  loadCategories();
+  switch (targetType) {
+    case 'HERB':
+      router.push({ name: 'HerbDetail', params: { id: targetId } });
+      break;
+    case 'VIDEO':
+      router.push({ name: 'VideoDetail', params: { id: targetId } });
+      break;
+    case 'ARTICLE':
+      router.push({ name: 'DailyDetail', params: { id: targetId } });
+      break;
+    default:
+      break;
   }
 };
 

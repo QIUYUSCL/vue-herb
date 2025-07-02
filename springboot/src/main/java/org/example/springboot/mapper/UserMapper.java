@@ -1,5 +1,6 @@
 package org.example.springboot.mapper;
 
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -86,6 +87,7 @@ public interface UserMapper {
 
     int updateCommentsCount(@Param("targetType") String targetType, @Param("targetId") int targetId);
 
+    @MapKey("comment_id")
     List<Map<String, Object>> getCommentsWithUserInfo(@Param("targetType") String targetType, @Param("targetId") int targetId);
 
 
