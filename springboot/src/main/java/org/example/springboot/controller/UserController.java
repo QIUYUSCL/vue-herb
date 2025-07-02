@@ -54,4 +54,14 @@ public class UserController {
         }
     }
 
+    @PostMapping("/register")
+    public Result register(@RequestBody UserInfo userInfo) {
+        int result = userService.registerUser(userInfo);
+        if (result > 0) {
+            return Result.success("注册成功", userInfo);
+        } else {
+            return Result.error(400, "注册失败");
+        }
+    }
+
 }

@@ -39,7 +39,10 @@
             <i class="fa fa-times text-lg"></i>
           </el-button>
         </div>
-        <router-link to="/login" class="hidden md:block user-icon-link">
+        <router-link
+            :to="isLoggedIn ? '/user-center' : '/login'"
+            class="hidden md:block user-icon-link"
+        >
           <button class="user-icon-btn">
             <i class="fa fa-user-circle user-icon"></i>
           </button>
@@ -52,7 +55,7 @@
 
 <script setup>
 
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
 import request from "@/utils/request.js";
 import router from "@/router/index.js";
 
@@ -60,6 +63,11 @@ import router from "@/router/index.js";
 const showSearchIcon = ref(true);
 // 存储搜索关键词
 const searchQuery = ref('');
+
+// 计算属性判断用户是否登录
+const isLoggedIn = computed(() => {
+  return localStorage.getItem('user_id') !== null;
+});
 
 // 处理搜索逻辑
 const handleSearch = async () => {

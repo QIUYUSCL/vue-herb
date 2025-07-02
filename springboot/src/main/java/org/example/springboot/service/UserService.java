@@ -24,4 +24,8 @@ public class UserService {
     public UserInfo login(String username, String password) {
         return userMapper.selectByUsernameAndPassword(username, password);
     }
+
+    public int registerUser(UserInfo userInfo) {
+        return userMapper.insertUser(userInfo);
+    }
 }

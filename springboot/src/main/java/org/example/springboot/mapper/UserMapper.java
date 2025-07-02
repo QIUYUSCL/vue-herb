@@ -12,4 +12,5 @@ public interface UserMapper {
 
     UserInfo selectByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
 
+    int insertUser(UserInfo userInfo);
 }

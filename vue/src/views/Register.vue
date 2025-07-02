@@ -128,9 +128,8 @@
 <script setup>
 import { ref } from 'vue';
 import router from '@/router/index.js';
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-
+import request from '@/utils/request.js';
+import { ElMessage } from 'element-plus';
 
 const username = ref('');
 const email = ref('');
@@ -142,31 +141,36 @@ const agreeTerms = ref(false);
 
 const handleRegister = async () => {
   if (!username.value || !email.value || !password.value || !confirmPassword.value) {
-    alert('请填写所有必填字段');
+    ElMessage.error('请填写所有必填字段');
     return;
   }
 
   if (password.value !== confirmPassword.value) {
-    alert('两次输入的密码不一致');
+    ElMessage.error('两次输入的密码不一致');
     return;
   }
 
   if (!agreeTerms.value) {
-    alert('请同意用户协议和隐私政策');
+    ElMessage.error('请同意用户协议和隐私政策');
     return;
   }
 
   try {
-    // 模拟注册请求
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    console.log('用户名:', username.value);
-    console.log('邮箱:', email.value);
-    console.log('密码:', password.value);
-    // 注册成功后跳转到登录页
-    router.push('/login');
-    alert('注册成功，请登录');
+    const userInfo = {
+      username: username.value,
+      password: password.value,
+      email: email.value,
+      // 其他字段可按需补充
+    };
+    const response = await request.post('/user/register', userInfo);
+    if (response.code === "200") {
+      ElMessage.success('注册成功，请登录');
+      router.push('/login');
+    } else {
+      ElMessage.error(response.message);
+    }
   } catch (error) {
-    alert('注册失败，请稍后重试');
+    ElMessage.error('注册失败，请稍后重试');
   }
 };
 

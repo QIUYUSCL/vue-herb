@@ -116,7 +116,7 @@ const handleLogin = async () => {
       localStorage.setItem('user_id', response.data.user_id);
       localStorage.setItem('token', JSON.stringify(response.data));
       router.push('/user-center');
-      ElMessage.success(response.message);
+      ElMessage.success('登录成功');
     } else {
       ElMessage.error(response.message);
     }

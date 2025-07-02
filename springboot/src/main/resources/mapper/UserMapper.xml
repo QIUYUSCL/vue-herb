@@ -17,4 +17,10 @@
         WHERE username = #{username} AND password = #{password}
     </select>
 
+    <insert id="insertUser" parameterType="org.example.springboot.entity.UserInfo">
+        INSERT INTO user_info (username, password, avatar, phone, email, gender, status, createTime, updateTime)
+        VALUES (#{username}, #{password}, COALESCE(#{avatar}, 'https://img.88icon.com/download/jpg/20201226/9d64c2d320c079cbd4f38f10e066dc71_512_512.jpg!bg'),
+                #{phone}, #{email}, #{gender}, #{status}, NOW(), NOW())
+    </insert>
+
 </mapper>
