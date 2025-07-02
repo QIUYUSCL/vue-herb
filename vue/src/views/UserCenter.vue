@@ -15,20 +15,19 @@
               />
               <div class="ml-4">
                 <h3 class="font-semibold text-lg">{{ userInfo.username }}</h3>
-                <p class="text-sm opacity-80">{{ userInfo.memberType || '普通会员' }}</p>
               </div>
             </div>
             <div class="mt-4 grid grid-cols-3 gap-2 text-center">
               <div>
-                <div class="text-xl font-semibold">{{ userStats.favorites }}</div>
+                <div class="text-xl font-semibold">{{ userStats.collectCount }}</div>
                 <div class="text-xs opacity-80">收藏</div>
               </div>
               <div>
-                <div class="text-xl font-semibold">{{ userStats.views }}</div>
-                <div class="text-xs opacity-80">浏览</div>
+                <div class="text-xl font-semibold">{{ userStats.likeCount }}</div>
+                <div class="text-xs opacity-80">点赞</div>
               </div>
               <div>
-                <div class="text-xl font-semibold">{{ userStats.comments }}</div>
+                <div class="text-xl font-semibold">{{ userStats.commentCount }}</div>
                 <div class="text-xs opacity-80">评论</div>
               </div>
             </div>
@@ -120,7 +119,44 @@
         </div>
 
         <el-card class="change-password-card">
-          <!-- ... 已有代码 ... -->
+          <template #header>
+            <div class="flex justify-between items-center">
+              <span>修改密码</span>
+            </div>
+          </template>
+          <el-form
+              ref="passwordFormRef"
+              :model="passwordForm"
+              :rules="passwordRules"
+              label-width="120px"
+          >
+            <el-form-item label="旧密码" prop="oldPassword">
+              <el-input
+                  v-model="passwordForm.oldPassword"
+                  type="password"
+                  show-password
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="新密码" prop="newPassword">
+              <el-input
+                  v-model="passwordForm.newPassword"
+                  type="password"
+                  show-password
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="confirmPassword">
+              <el-input
+                  v-model="passwordForm.confirmPassword"
+                  type="password"
+                  show-password
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitPasswordChange">
+                提交修改
+              </el-button>
+            </el-form-item>
+          </el-form>
         </el-card>
       </div>
     </div>
@@ -153,9 +189,9 @@ const userInfo = reactive({
 
 // 用户统计信息
 const userStats = reactive({
-  favorites: 12,
-  views: 24,
-  comments: 3,
+  favorites: 0,
+  views: 0,
+  comments: 0,
 });
 
 // 消息通知数量
@@ -195,50 +231,108 @@ const passwordRules = {
 const passwordFormRef = ref(null);
 const router = useRouter();
 
-// 组件加载时获取用户信息
-onMounted(async () => {
+const fetchUserRelatedData = async () => {
   const user_id = localStorage.getItem('user_id');
   if (user_id) {
     try {
-      const response = await request.get(`/user/selectById/${user_id}`);
-      if (response.code === "200") {
-        const userData = response.data;
+      // 获取用户信息
+      const userResponse = await request.get(`/user/selectById/${user_id}`);
+      if (userResponse.code === "200") {
+        const userData = userResponse.data;
         userInfo.avatar = userData.avatar;
         userInfo.username = userData.username;
         userInfo.email = userData.email;
         userInfo.phone = userData.phone;
         userInfo.gender = userData.gender === 1 ? '1' : '0';
       } else {
-        ElMessage.error(response.message);
+        ElMessage.error(userResponse.message);
+      }
+
+      // 获取用户互动数量
+      const interactionResponse = await request.get(`/user/interaction-count/${user_id}`);
+      if (interactionResponse.code === "200") {
+        const interactionData = interactionResponse.data;
+        userStats.collectCount = interactionData.collectCount;
+        userStats.commentCount = interactionData.commentCount;
+        userStats.likeCount = interactionData.likeCount;
+      } else {
+        ElMessage.error(interactionResponse.message);
+      }
+
+      // 获取用户浏览数量，假设已有对应接口
+      const viewResponse = await request.get(`/user/history/${user_id}`);
+      if (viewResponse.code === "200") {
+        userStats.viewCount = viewResponse.data;
+      } else {
+        ElMessage.error(viewResponse.message);
       }
     } catch (error) {
-      ElMessage.error('获取用户信息失败，请稍后重试');
-      console.error('获取用户信息出错:', error);
+      ElMessage.error('获取数据失败，请稍后重试');
+      console.error('获取数据出错:', error);
     }
   } else {
     ElMessage.warning('未检测到用户登录信息，请重新登录');
     router.push('/login');
   }
+};
+
+// 组件加载时获取用户信息
+onMounted(async () => {
+  fetchUserRelatedData()
 });
 
 // 提交个人资料修改
-const submitProfile = () => {
-  // 模拟保存成功
-  ElMessage.success("个人资料修改成功");
+const submitProfile = async () => {
+  try {
+    const userInfoData = {
+      user_id: parseInt(localStorage.getItem('user_id')),
+      username: userInfo.username,
+      phone: userInfo.phone,
+      email: userInfo.email,
+      gender: parseInt(userInfo.gender)
+    };
+
+    const response = await request.post('/user/updateInfo', userInfoData);
+    if (response.code === "200") {
+      ElMessage.success("个人资料修改成功");
+      // 重新获取用户信息
+      await fetchUserRelatedData();
+    } else {
+      ElMessage.error(response.message);
+    }
+  } catch (error) {
+    ElMessage.error('修改失败，请稍后重试');
+    console.error('修改用户信息出错:', error);
+  }
 };
 
-// 提交密码修改
 const submitPasswordChange = async () => {
   if (!passwordFormRef.value) return;
   await passwordFormRef.value.validate(async (valid) => {
     if (valid) {
-      // 模拟密码修改成功
-      ElMessage.success("密码修改成功，请重新登录");
-      logout();
+      try {
+        const user_id = localStorage.getItem('user_id');
+        const requestData = {
+          user_id,
+          oldPassword: passwordForm.oldPassword,
+          newPassword: passwordForm.newPassword
+        };
+        console.log('准备发送请求，请求参数:', requestData); // 打印请求参数
+        const response = await request.post('/user/changePassword', requestData);
+        console.log('收到响应:', response); // 打印响应数据
+        if (response.code === '200') {
+          ElMessage.success('密码修改成功，请重新登录');
+          logout();
+        } else {
+          ElMessage.error(response.message);
+        }
+      } catch (error) {
+        ElMessage.error('修改失败，请稍后重试');
+        console.error('修改密码出错:', error);
+      }
     }
   });
 };
-
 // 退出登录
 const logout = () => {
   // 清除用户登录状态，实际项目中应清除 token 等信息
@@ -249,5 +343,5 @@ const logout = () => {
 </script>
 
 <style scoped>
-/* ... 已有代码 ... */
+
 </style>

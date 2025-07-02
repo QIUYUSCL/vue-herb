@@ -67,7 +67,7 @@ const formatDuration = (seconds) => {
   return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 };
 
-// 模拟从 API 获取视频详情数据
+
 const fetchVideoDetail = async () => {
   try {
     const videoId = parseInt(route.params.id);

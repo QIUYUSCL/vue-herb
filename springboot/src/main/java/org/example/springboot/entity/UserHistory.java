@@ -4,55 +4,45 @@ import java.util.Date;
 
 public class UserHistory {
 
-    /** 历史记录 ID，主键，自增 */
-    private int historyId;
 
-    public int getUserId() {
-        return userId;
+    /** 用户 ID */
+    private int user_id;
+    /** 目标类型，HERB=药材，ARTICLE=文章，VIDEO=视频 */
+    private String target_type;
+    /** 目标 ID */
+    private Long target_id;
+    /** 浏览时间，默认值为当前时间 */
+    private Date create_time;
+
+    public int getUser_id() {
+        return user_id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getHistoryId() {
-        return historyId;
-    }
-
-    public void setHistoryId(int historyId) {
-        this.historyId = historyId;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public String getTargetType() {
-        return targetType;
+        return target_type;
     }
 
     public void setTargetType(String targetType) {
-        this.targetType = targetType;
+        this.target_type = targetType;
     }
 
-    public Long getTargetId() {
-        return targetId;
+    public Long getTarget_id() {
+        return target_id;
     }
 
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
+    public void setTarget_id(Long target_id) {
+        this.target_id = target_id;
     }
 
     public Date getCreateTime() {
-        return createTime;
+        return create_time;
     }
 
     public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+        this.create_time = createTime;
     }
-
-    /** 用户 ID */
-    private int userId;
-    /** 目标类型，HERB=药材，ARTICLE=文章，VIDEO=视频 */
-    private String targetType;
-    /** 目标 ID */
-    private Long targetId;
-    /** 浏览时间，默认值为当前时间 */
-    private Date createTime;
 }

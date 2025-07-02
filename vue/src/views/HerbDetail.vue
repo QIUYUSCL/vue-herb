@@ -68,11 +68,11 @@
             <i class="fa fa-eye text-gray-600"></i>
             <span class="ml-1 text-sm text-gray-600">{{ herb.views }} 次浏览</span>
           </div>
-          <div class="flex items-center">
+          <div class="flex items-center" @click="handleLike" :class="{ 'opacity-50 cursor-not-allowed': isLiked }">
             <i class="fa fa-thumbs-up text-gray-600"></i>
             <span class="ml-1 text-sm text-gray-600">{{ herb.likes }} 点赞</span>
           </div>
-          <div class="flex items-center">
+          <div class="flex items-center" @click="handleCollect" :class="{ 'opacity-50 cursor-not-allowed': isCollected }">
             <i class="fa fa-bookmark text-gray-600"></i>
             <span class="ml-1 text-sm text-gray-600">{{ herb.collections }} 收藏</span>
           </div>
@@ -200,6 +200,60 @@ onMounted(() => {
 const goBack = () => {
   router.go(-1);
 };
+
+const handleLike = async () => {
+  const userId = parseInt(localStorage.getItem('user_id'));
+  if (isNaN(userId)) {
+    ElMessage.warning('请先登录');
+    return;
+  }
+  // 检查 herb.value 是否存在
+  if (!herb.value || !herb.value.herb_id) {
+    ElMessage.error('药材信息未加载完成，请稍后重试');
+    return;
+  }
+  try {
+    const params = new URLSearchParams();
+    params.append('herbId', herb.value.herb_id);
+    params.append('userId', userId);
+    params.append('actionType', 'LIKE');
+    const response = await request.post('/herb/likeOrCollect', params);
+    if (response.code === "200") {
+      herb.value.likes += 1;
+      ElMessage.success('点赞成功');
+    } else {
+      ElMessage.error('请勿重复点赞');
+    }
+  } catch (error) {
+    console.error('点赞请求出错:', error);
+    ElMessage.error('点赞失败，请稍后重试，错误信息：' + error.message);
+  }
+};
+
+const handleCollect = async () => {
+  const userId = parseInt(localStorage.getItem('user_id'));
+  if (isNaN(userId)) {
+    ElMessage.warning('请先登录');
+    return;
+  }
+  try {
+    const params = new URLSearchParams();
+    params.append('herbId', herb.value.herb_id);
+    params.append('userId', userId);
+    params.append('actionType', 'COLLECT');
+    const response = await request.post('/herb/likeOrCollect', params);
+    if (response.code === "200") {
+      herb.value.collections += 1;
+      ElMessage.success('收藏成功');
+    } else {
+      ElMessage.error('请勿重复收藏');
+    }
+  } catch (error) {
+    console.error('收藏请求出错:', error);
+    ElMessage.error('收藏失败，请稍后重试，错误信息：' + error.message);
+  }
+};
+
 </script>
 
 <style scoped>

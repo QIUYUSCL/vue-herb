@@ -10,4 +10,18 @@ public interface HerbInfoMapper {
     HerbInfo selectById(Integer id);
 
     List<HerbInfo> searchHerbs(String keyword);
+
+    /**
+     * 更新药材点赞数
+     * @param herbId 药材 ID
+     * @return 更新成功的记录数
+     */
+    int updateLikes(int herbId);
+
+    /**
+     * 更新药材收藏数
+     * @param herbId 药材 ID
+     * @return 更新成功的记录数
+     */
+    int updateCollections(int herbId);
 }

@@ -23,4 +23,66 @@
                 #{phone}, #{email}, #{gender}, #{status}, NOW(), NOW())
     </insert>
 
+    <select id="getUserCommentsByUserId" parameterType="int" resultType="org.example.springboot.entity.UserComment">
+        SELECT * FROM user_comment WHERE user_id = #{userId}
+    </select>
+
+    <select id="getUserHistoryByUserId" parameterType="int" resultType="org.example.springboot.entity.UserHistory">
+        SELECT * FROM user_history WHERE user_id = #{userId}
+    </select>
+
+    <select id="getUserInteractionsByUserId" parameterType="int" resultType="org.example.springboot.entity.UserInteraction">
+        SELECT * FROM user_interaction WHERE user_id = #{userId}
+    </select>
+
+    <resultMap id="UserInteractionCountResultMap" type="org.example.springboot.entity.UserInteractionCount">
+        <result property="likeCount" column="like_count"/>
+        <result property="collectCount" column="collect_count"/>
+        <result property="commentCount" column="comment_count"/>
+    </resultMap>
+
+    <select id="countUserInteractions" parameterType="int" resultMap="UserInteractionCountResultMap">
+        SELECT
+            SUM(CASE WHEN ui.action_type = 'LIKE' THEN 1 ELSE 0 END) AS like_count,
+            SUM(CASE WHEN ui.action_type = 'COLLECT' THEN 1 ELSE 0 END) AS collect_count,
+            COUNT(uc.comment_id) AS comment_count
+        FROM
+            user_interaction ui
+                LEFT JOIN
+            user_comment uc ON ui.user_id = uc.user_id AND ui.target_id = uc.target_id AND ui.target_type = uc.target_type
+        WHERE
+            ui.user_id = #{userId}
+        -- 建议添加 GROUP BY 确保结果按用户分组
+        GROUP BY ui.user_id
+    </select>
+
+
+    <update id="updateUserInfo" parameterType="org.example.springboot.entity.UserInfo">
+        UPDATE user_info
+        SET
+            username = #{username},
+            phone = #{phone},
+            email = #{email},
+            gender = #{gender},
+            updateTime = NOW()
+        WHERE user_id = #{user_id}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE user_info
+        SET password = #{newPassword}, updateTime = NOW()
+        WHERE user_id = #{userId} AND password = #{oldPassword}
+    </update>
+
+    <insert id="insertUserInteraction" parameterType="org.example.springboot.entity.UserInteraction">
+        INSERT INTO user_interaction (user_id, target_type, target_id, action_type, create_time)
+        VALUES (#{user_id}, #{target_type}, #{target_id}, #{action_type}, NOW())
+    </insert>
+
+    <select id="getUserCollectionsByUserId" parameterType="int" resultType="org.example.springboot.entity.UserInteraction">
+        SELECT * FROM user_interaction
+        WHERE user_id = #{userId}
+          AND action_type = 'COLLECT'
+    </select>
+
 </mapper>

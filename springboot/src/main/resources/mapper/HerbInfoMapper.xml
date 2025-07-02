@@ -16,4 +16,16 @@
         select * from herb_info where herb_name like #{keyword}
     </select>
 
+    <update id="updateLikes" parameterType="int">
+        UPDATE herb_info
+        SET likes = likes + 1
+        WHERE herb_id = #{herbId}
+    </update>
+
+    <update id="updateCollections" parameterType="int">
+        UPDATE herb_info
+        SET collections = collections + 1
+        WHERE herb_id = #{herbId}
+    </update>
+
 </mapper>

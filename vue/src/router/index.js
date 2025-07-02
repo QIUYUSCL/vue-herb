@@ -12,6 +12,9 @@ import VideoDetail from "@/views/VideoDetail.vue";
 import Daily from "@/views/Daily.vue";
 import DailyDetail from "@/views/DailyDetail.vue";
 import SearchResult from "@/views/SearchResult.vue";
+import MyCollections from "@/views/my-collections.vue";
+import BrowsingHistory from "@/views/browsing-history.vue";
+import MyComments from "@/views/my-comments.vue";
 
 const routes = [
     {
@@ -82,6 +85,24 @@ const routes = [
         path: '/search-result',
         name: 'SearchResult',
         component: SearchResult
+    },
+    {
+        path: '/my-collections',
+        name: 'MyCollections',
+        component: MyCollections,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/browsing-history',
+        name: 'BrowsingHistory',
+        component: BrowsingHistory,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/my-comments',
+        name: 'MyComments',
+        component: MyComments,
+        meta: { requiresAuth: true }
     },
 
 ];
