@@ -28,4 +28,10 @@
         WHERE herb_id = #{herbId}
     </update>
 
+    <update id="updateViews" parameterType="int">
+        UPDATE herb_info
+        SET views = views + 1
+        WHERE herb_id = #{herbId}
+    </update>
+
 </mapper>

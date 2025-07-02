@@ -10,4 +10,10 @@ public interface DailyLearningMapper {
     DailyLearning selectById(Integer id);
 
     List<DailyLearning> searchDaily(String keyword);
+
+    int updateLikes(int articleId);
+
+    int updateCollections(int articleId);
+
+    int updateViews(int articleId);
 }

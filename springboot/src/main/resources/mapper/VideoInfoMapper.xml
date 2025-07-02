@@ -16,4 +16,18 @@
         select * from video_info where title like #{keyword}
     </select>
 
+    <update id="updateLikes" parameterType="int">
+        update video_info set likes = likes + 1 where video_id = #{videoId}
+    </update>
+
+    <update id="updateCollections" parameterType="int">
+        update video_info set collections = collections + 1 where video_id = #{videoId}
+    </update>
+
+    <update id="updateViews" parameterType="int">
+        UPDATE video_info
+        SET views = views + 1
+        WHERE video_id = #{videoId}
+    </update>
+
 </mapper>

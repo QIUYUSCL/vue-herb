@@ -118,6 +118,7 @@ import Footer from "@/components/Footer.vue";
 import Header from "@/components/Header.vue";
 import request from "@/utils/request";
 import {ElMessage} from "element-plus";
+import {commonRequest} from "@/utils/commonRequest.js";
 
 // 药材数据
 const allHerbs = ref([]);
@@ -235,21 +236,12 @@ const handleCurrentChange = (newPage) => {
   currentPage.value = newPage;
 };
 
-
-// 定义 load 函数
-const load = async () => {
+const fetchHerbs = async () => {
   try {
-    const response = await request.get('/herb/info/selectAll'); // 确认请求路径
-
-    if(response.code === "200") {
-      allHerbs.value = response.data;
-    }
-    else{
-      ElMessage.error('加载失败,请重试');
-    }
+    const data = await commonRequest('herb', 'selectAll');
+    allHerbs.value = data;
   } catch (error) {
-    console.error('请求出错:', error);
-    ElMessage.error('加载失败');
+    ElMessage.error('获取药材信息失败，请稍后重试');
   }
 };
 
@@ -269,7 +261,7 @@ const loadCategories = async () => {
 };
 
 onMounted(() => {
-  load();
+  fetchHerbs();
   loadCategories();
 });
 

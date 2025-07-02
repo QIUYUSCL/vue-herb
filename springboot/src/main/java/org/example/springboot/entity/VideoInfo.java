@@ -39,6 +39,17 @@ public class VideoInfo {
      * 视频的点赞数量
      */
     private Integer likes;
+
+    private int collections;
+
+    public int getCollections() {
+        return collections;
+    }
+
+    public void setCollections(int collections) {
+        this.collections = collections;
+    }
+
     /**
      * 视频的评论数量
      */

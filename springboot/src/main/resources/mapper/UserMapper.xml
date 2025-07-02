@@ -85,4 +85,18 @@
           AND action_type = 'COLLECT'
     </select>
 
+    <select id="hasViewedToday" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM user_history
+        WHERE user_id = #{params.userId}
+          AND target_type = #{params.targetType}
+          AND target_id = #{params.targetId}
+          AND DATE(create_time) = CURDATE()
+    </select>
+
+    <insert id="insertUserHistory" parameterType="org.example.springboot.entity.UserHistory">
+        INSERT INTO user_history (user_id, target_type, target_id, create_time)
+        VALUES (#{user_id}, #{target_type}, #{target_id}, NOW())
+    </insert>
+
 </mapper>

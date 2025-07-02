@@ -48,6 +48,7 @@ import { useRouter } from 'vue-router';
 import Request  from "@/utils/request.js";
 import request from "@/utils/request.js";
 import {ElMessage} from "element-plus";
+import {commonRequest} from "@/utils/commonRequest.js";
 
 const router = useRouter();
 
@@ -67,16 +68,10 @@ const formatDuration = (seconds) => {
 
 const fetchVideos = async () => {
   try {
-    const response = await request.get("/video/selectAll")
-    if(response.code==="200")
-    {
-      videos.value=response.data;
-    }
-    else{
-      ElMessage.error('加载失败,请重试');
-    }
+    const data = await commonRequest('video', 'selectAll');
+    videos.value = data;
   } catch (error) {
-    ElMessage.error('获取视频数据失败:');
+    ElMessage.error('获取视频信息失败，请稍后重试');
   }
 };
 

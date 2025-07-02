@@ -45,15 +45,6 @@ public class HerbController {
         return Result.success(list);
     }
 
-    @PostMapping("/likeOrCollect")
-    public Result likeOrCollect(@RequestParam int herbId, @RequestParam int userId, @RequestParam String actionType) {
-        boolean result = herbInfoService.handleLikeOrCollect(herbId, userId, actionType);
-        if (result) {
-            return Result.success("操作成功");
-        } else {
-            return Result.error(400, "操作失败");
-        }
-    }
 
 }
 

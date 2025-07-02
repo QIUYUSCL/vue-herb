@@ -38,4 +38,14 @@ public class VideoController {
         return Result.success(list);
     }
 
+    @PostMapping("/likeOrCollect")
+    public Result likeOrCollect(@RequestParam int videoId, @RequestParam int userId, @RequestParam String actionType) {
+        boolean result = videoInfoService.handleLikeOrCollect(videoId, userId, actionType);
+        if (result) {
+            return Result.success("操作成功");
+        } else {
+            return Result.error(400, "操作失败");
+        }
+    }
+
 }

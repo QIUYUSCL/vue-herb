@@ -16,4 +16,18 @@
         select * from daily_learning where title like #{keyword}
     </select>
 
+    <update id="updateLikes" parameterType="int">
+        update daily_learning set likes = likes + 1 where article_id = #{articleId}
+    </update>
+
+    <update id="updateCollections" parameterType="int">
+        update daily_learning set collections = collections + 1 where article_id = #{articleId}
+    </update>
+
+    <update id="updateViews" parameterType="int">
+        UPDATE daily_learning
+        SET views = views + 1
+        WHERE article_id = #{articleId}
+    </update>
+
 </mapper>

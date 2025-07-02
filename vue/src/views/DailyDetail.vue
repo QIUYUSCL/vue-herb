@@ -30,9 +30,15 @@
           </div>
         </div>
         <p class="text-sm text-gray-600 mb-4">{{ article.content }}</p>
-        <div v-if="article.category" class="mb-4">
-          <span class="text-sm font-medium">分类：</span>
-          <span class="text-sm text-gray-600">{{ article.category }}</span>
+        <div class="flex items-center mb-4">
+          <i class="fa fa-eye text-gray-600"></i>
+          <span class="ml-1 text-sm text-gray-600">{{ article.views }} 次观看</span>
+          <i class="fa fa-thumbs-up text-gray-600 ml-4" @click="handleLike(article.article_id)"></i>
+          <span class="ml-1 text-sm text-gray-600">{{ article.likes }} 点赞</span>
+          <i class="fa fa-bookmark text-gray-600 ml-4" @click="handleCollect(article.article_id)"></i>
+          <span class="ml-1 text-sm text-gray-600">{{ article.collections }} 收藏</span>
+          <i class="fa fa-comment text-gray-600 ml-4"></i>
+          <span class="ml-1 text-sm text-gray-600">{{ article.comments }} 评论</span>
         </div>
       </div>
       <div v-else class="text-center py-12">
@@ -52,6 +58,8 @@ import Footer from '@/components/Footer.vue';
 import { Back } from "@element-plus/icons-vue";
 import request from "@/utils/request.js";
 import {ElMessage} from "element-plus";
+import {handleInteraction, handleView} from "@/utils/interactions.js";
+import {commonRequest} from "@/utils/commonRequest.js";
 
 const route = useRoute();
 const router = useRouter();
@@ -62,24 +70,31 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString();
 };
 
-// 模拟从 API 获取文章数据
 const fetchArticleData = async () => {
   try {
     const articleId = parseInt(route.params.id);
-    const response=await request.get(`/daily/selectById/${articleId}`);
-    if(response.code==="200"){
-     article.value = response.data;
-    }
-    else{
-      ElMessage.error('获取数据失败');
-    }
+    const data = await commonRequest('article', 'selectById', { id: articleId });
+    article.value = data;
   } catch (error) {
-    console.error('获取文章数据失败:', error);
+    ElMessage.error('获取文章信息失败，请稍后重试');
   }
+};
+const handleDailyView = async () => {
+  const articleId = parseInt(route.params.id);
+  await handleView('ARTICLE', articleId);
+};
+
+const handleLike = async () => {
+  await handleInteraction(article.value.article_id, 'ARTICLE', 'LIKE', article.value);
+};
+
+const handleCollect = async () => {
+  await handleInteraction(article.value.article_id, 'ARTICLE', 'COLLECT', article.value);
 };
 
 onMounted(() => {
   fetchArticleData();
+  handleDailyView()
 });
 
 // 返回上一页的方法

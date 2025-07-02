@@ -10,4 +10,10 @@ public interface VideoInfoMapper {
     VideoInfo selectById(int id);
 
     List<VideoInfo> searchVideo(String s);
+
+    int updateLikes(int videoId);
+
+    int updateCollections(int videoId);
+
+    int updateViews(int videoId);
 }

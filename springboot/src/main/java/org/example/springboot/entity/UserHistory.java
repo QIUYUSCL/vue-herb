@@ -10,7 +10,7 @@ public class UserHistory {
     /** 目标类型，HERB=药材，ARTICLE=文章，VIDEO=视频 */
     private String target_type;
     /** 目标 ID */
-    private Long target_id;
+    private int target_id;
     /** 浏览时间，默认值为当前时间 */
     private Date create_time;
 
@@ -22,19 +22,19 @@ public class UserHistory {
         this.user_id = user_id;
     }
 
-    public String getTargetType() {
+    public String getTarget_type() {
         return target_type;
     }
 
-    public void setTargetType(String targetType) {
+    public void setTarget_type(String targetType) {
         this.target_type = targetType;
     }
 
-    public Long getTarget_id() {
+    public int getTarget_id() {
         return target_id;
     }
 
-    public void setTarget_id(Long target_id) {
+    public void setTarget_id(int target_id) {
         this.target_id = target_id;
     }
 

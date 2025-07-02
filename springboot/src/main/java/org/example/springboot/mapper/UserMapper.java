@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Select;
 import org.example.springboot.entity.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface UserMapper {
@@ -78,5 +79,8 @@ public interface UserMapper {
      * @return 用户收藏记录列表
      */
     List<UserInteraction> getUserCollectionsByUserId(@Param("userId") int userId);
+
+    int hasViewedToday(@Param("params") Map<String, Object> params);
+    int insertUserHistory(UserHistory userHistory);
 
 }

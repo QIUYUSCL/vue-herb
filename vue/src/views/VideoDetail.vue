@@ -31,11 +31,13 @@
           <span class="text-sm text-gray-600">时长: {{ formatDuration(video.duration) }}</span>
           <span class="text-sm text-gray-600">分类: {{ video.category }}</span>
         </div>
-        <div class="flex items-center mb-4">
+        <div class="flex items-center mt-2">
           <i class="fa fa-eye text-gray-600"></i>
           <span class="ml-1 text-sm text-gray-600">{{ video.views }} 次观看</span>
-          <i class="fa fa-thumbs-up text-gray-600 ml-4"></i>
+          <i class="fa fa-thumbs-up text-gray-600 ml-4" @click="handleLike(video.video_id)"></i>
           <span class="ml-1 text-sm text-gray-600">{{ video.likes }} 点赞</span>
+          <i class="fa fa-bookmark text-gray-600 ml-4" @click="handleCollect(video.video_id)"></i>
+          <span class="ml-1 text-sm text-gray-600">{{ video.collections}} 收藏</span>
           <i class="fa fa-comment text-gray-600 ml-4"></i>
           <span class="ml-1 text-sm text-gray-600">{{ video.comments }} 评论</span>
         </div>
@@ -56,6 +58,8 @@ import {Back} from "@element-plus/icons-vue";
 import router from "@/router";
 import request from "@/utils/request.js";
 import {ElMessage} from "element-plus";
+import {handleInteraction, handleView} from "@/utils/interactions.js";
+import {commonRequest} from "@/utils/commonRequest.js";
 const route = useRoute();
 const video = ref(null);
 
@@ -71,20 +75,29 @@ const formatDuration = (seconds) => {
 const fetchVideoDetail = async () => {
   try {
     const videoId = parseInt(route.params.id);
-    const response = await request.get(`/video/selectById/${videoId}`);
-    if(response.code==="200")
-    {
-      video.value=response.data;
-    }else{
-      ElMessage.error("code错误");
-    }
+    const data = await commonRequest('video', 'selectById', { id: videoId });
+    video.value = data;
   } catch (error) {
-    console.error('获取视频详情数据失败:', error);
+    ElMessage.error('获取视频信息失败，请稍后重试');
   }
+};
+
+const handleVideoView = async () => {
+  const videoId = parseInt(route.params.id);
+  await handleView('VIDEO', videoId);
+};
+
+const handleLike = async () => {
+  await handleInteraction(video.value.video_id, 'VIDEO', 'LIKE', video.value);
+};
+
+const handleCollect = async () => {
+  await handleInteraction(video.value.video_id, 'VIDEO', 'COLLECT', video.value);
 };
 
 onMounted(() => {
   fetchVideoDetail();
+  handleVideoView()
 });
 
 const goBack = () => {

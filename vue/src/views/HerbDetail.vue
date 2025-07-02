@@ -68,11 +68,11 @@
             <i class="fa fa-eye text-gray-600"></i>
             <span class="ml-1 text-sm text-gray-600">{{ herb.views }} 次浏览</span>
           </div>
-          <div class="flex items-center" @click="handleLike" :class="{ 'opacity-50 cursor-not-allowed': isLiked }">
+          <div class="flex items-center" @click="handleLike" >
             <i class="fa fa-thumbs-up text-gray-600"></i>
             <span class="ml-1 text-sm text-gray-600">{{ herb.likes }} 点赞</span>
           </div>
-          <div class="flex items-center" @click="handleCollect" :class="{ 'opacity-50 cursor-not-allowed': isCollected }">
+          <div class="flex items-center" @click="handleCollect" >
             <i class="fa fa-bookmark text-gray-600"></i>
             <span class="ml-1 text-sm text-gray-600">{{ herb.collections }} 收藏</span>
           </div>
@@ -95,6 +95,8 @@ import Footer from '@/components/Footer.vue';
 import { Back } from "@element-plus/icons-vue";
 import request from '@/utils/request';
 import { ElMessage } from 'element-plus';
+import {handleInteraction, handleView} from "@/utils/interactions.js";
+import {commonRequest} from "@/utils/commonRequest.js";
 
 const route = useRoute();
 const router = useRouter();
@@ -162,18 +164,10 @@ const categoryName = computed(() => {
 const fetchHerbData = async () => {
   try {
     const herbId = parseInt(route.params.id);
-    const response = await request.get(`/herb/info/selectById/${herbId}`);
-    if (response.code === "200") {
-      herb.value = response.data;
-      categoryId.value = response.data.category_id;
-      // 调用获取分类信息的接口
-      await fetchCategories();
-    } else {
-      ElMessage.error('获取药材数据失败');
-    }
+    const data = await commonRequest('herb', 'selectById', { id: herbId });
+    herb.value = data;
   } catch (error) {
-    console.error('获取药材数据失败:', error);
-    ElMessage.error('获取药材数据失败，请稍后重试');
+    ElMessage.error('获取药材信息失败，请稍后重试');
   }
 };
 
@@ -194,6 +188,7 @@ const fetchCategories = async () => {
 
 onMounted(() => {
   fetchHerbData();
+  handleHerbView();
 });
 
 // 返回上一页的方法
@@ -201,57 +196,17 @@ const goBack = () => {
   router.go(-1);
 };
 
+const handleHerbView = async () => {
+  const herbId = parseInt(route.params.id);
+  await handleView('HERB', herbId);
+};
+
 const handleLike = async () => {
-  const userId = parseInt(localStorage.getItem('user_id'));
-  if (isNaN(userId)) {
-    ElMessage.warning('请先登录');
-    return;
-  }
-  // 检查 herb.value 是否存在
-  if (!herb.value || !herb.value.herb_id) {
-    ElMessage.error('药材信息未加载完成，请稍后重试');
-    return;
-  }
-  try {
-    const params = new URLSearchParams();
-    params.append('herbId', herb.value.herb_id);
-    params.append('userId', userId);
-    params.append('actionType', 'LIKE');
-    const response = await request.post('/herb/likeOrCollect', params);
-    if (response.code === "200") {
-      herb.value.likes += 1;
-      ElMessage.success('点赞成功');
-    } else {
-      ElMessage.error('请勿重复点赞');
-    }
-  } catch (error) {
-    console.error('点赞请求出错:', error);
-    ElMessage.error('点赞失败，请稍后重试，错误信息：' + error.message);
-  }
+  await handleInteraction(herb.value.herb_id, 'HERB', 'LIKE', herb.value);
 };
 
 const handleCollect = async () => {
-  const userId = parseInt(localStorage.getItem('user_id'));
-  if (isNaN(userId)) {
-    ElMessage.warning('请先登录');
-    return;
-  }
-  try {
-    const params = new URLSearchParams();
-    params.append('herbId', herb.value.herb_id);
-    params.append('userId', userId);
-    params.append('actionType', 'COLLECT');
-    const response = await request.post('/herb/likeOrCollect', params);
-    if (response.code === "200") {
-      herb.value.collections += 1;
-      ElMessage.success('收藏成功');
-    } else {
-      ElMessage.error('请勿重复收藏');
-    }
-  } catch (error) {
-    console.error('收藏请求出错:', error);
-    ElMessage.error('收藏失败，请稍后重试，错误信息：' + error.message);
-  }
+  await handleInteraction(herb.value.herb_id, 'HERB', 'COLLECT', herb.value);
 };
 
 </script>

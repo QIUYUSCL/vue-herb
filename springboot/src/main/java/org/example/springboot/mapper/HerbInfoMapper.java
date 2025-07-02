@@ -24,4 +24,6 @@ public interface HerbInfoMapper {
      * @return 更新成功的记录数
      */
     int updateCollections(int herbId);
+
+    int updateViews(int herbId);
 }

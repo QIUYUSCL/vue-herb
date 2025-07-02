@@ -57,6 +57,7 @@ import { useRouter } from 'vue-router';
 import Request  from "@/utils/request.js";
 import request from "@/utils/request.js";
 import {ElMessage} from "element-plus";
+import {commonRequest} from "@/utils/commonRequest.js";
 
 const router = useRouter();
 
@@ -64,21 +65,12 @@ const router = useRouter();
 const loading = ref(true);
 const dailyArticles = ref([]);
 
-const load = async () => {
-  try{
-    const response = await request.get('/daily/selectAll');
-    console.log('返回的数据:', response.data); // 打印返回的数据
-    if(response.code === "200")
-    {
-      dailyArticles.value = response.data;
-    }else{
-      ElMessage.error('加载失败,请重试');
-    }
-  }catch{
-    console.error('请求出错:', error);
-    ElMessage.error('加载失败');
-  }finally {
-    loading.value = false;
+const fetchArticle = async () => {
+  try {
+    const data = await commonRequest('article', 'selectAll');
+    dailyArticles.value = data;
+  } catch (error) {
+    ElMessage.error('获取文章信息失败，请稍后重试');
   }
 }
 
@@ -93,7 +85,7 @@ const viewArticle = (articleId) => {
 };
 
 onMounted(() => {
-  load();
+  fetchArticle()
 });
 </script>
 

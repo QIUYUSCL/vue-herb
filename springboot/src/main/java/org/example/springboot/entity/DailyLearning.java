@@ -22,6 +22,8 @@ public class DailyLearning {
     private Integer views;
     // 文章点赞数，默认值为 0
     private Integer likes;
+
+    private int collections;
     // 文章评论数，默认值为 0
     private Integer comments;
     // 文章排序，默认值为 0
@@ -126,4 +128,12 @@ public class DailyLearning {
     // 文章创建时间，默认值为当前时间
     private Date create_time;
 
+
+    public int getCollections() {
+        return collections;
+    }
+
+    public void setCollections(int collections) {
+        this.collections = collections;
+    }
 }
