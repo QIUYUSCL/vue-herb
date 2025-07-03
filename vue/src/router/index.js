@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue';
 import Test from "@/views/test.vue";
 import Login from "@/views/Login.vue";
-import Register from "@/views/register.vue";
+import Register from "@/views/Register.vue";
 import Herbs from "@/views/Herbs.vue";
 import HerbDetail from "@/views/HerbDetail.vue";
 import UserCenter from "@/views/UserCenter.vue";
