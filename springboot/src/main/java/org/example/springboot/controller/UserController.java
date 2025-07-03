@@ -152,4 +152,27 @@ public class UserController {
         return Result.success("获取评论成功", comments);
     }
 
+
+    @GetMapping("/likes/{userId}")
+    public Result getUserLikes(@PathVariable Integer userId) {
+        List<UserInteraction> likes = userService.getUserLikesByUserId(userId);
+        return Result.success("获取用户点赞记录成功", likes);
+    }
+
+    @PostMapping("/resetPassword")
+    public Result resetPassword(@RequestBody Map<String, String> resetData) {
+        String phone = resetData.get("phone");
+        String email = resetData.get("email");
+        String newPassword = resetData.get("newPassword");
+        if (phone == null || email == null || newPassword == null) {
+            return Result.error(400, "电话号码、邮箱和新密码不能为空");
+        }
+        int result = userService.resetPassword(phone, email, newPassword);
+        if (result > 0) {
+            return Result.success("密码重置成功");
+        } else {
+            return Result.error(400, "电话号码或邮箱验证失败，密码重置失败");
+        }
+    }
+
 }

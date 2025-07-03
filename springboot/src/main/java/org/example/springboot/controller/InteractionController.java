@@ -7,6 +7,8 @@ import org.example.springboot.mapper.UserMapper;
 import org.example.springboot.service.InteractionService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/interaction")
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
@@ -26,9 +28,12 @@ public class InteractionController {
 
     @PostMapping("/likeOrCollect")
     public Result handleLikeOrCollect(@RequestParam String targetType, @RequestParam int targetId, @RequestParam int userId, @RequestParam String actionType) {
+        // 判断用户是否已经执行过该操作
+        boolean hasPerformed = userMapper.hasPerformedAction(userId, targetId, actionType);
         boolean result = interactionService.handleLikeOrCollect(targetType, targetId, userId, actionType);
         if (result) {
-            return Result.success("操作成功");
+            // 根据 hasPerformed 变量返回不同的消息和状态
+            return Result.success(hasPerformed ? "操作已取消" : "操作成功", Map.of("hasPerformed", hasPerformed));
         } else {
             return Result.error();
         }

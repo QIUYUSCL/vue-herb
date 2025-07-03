@@ -18,6 +18,10 @@ public interface HerbInfoMapper {
      */
     int updateLikes(int herbId);
 
+    int decreaseLikes(int herbId);
+
+    int decreaseCollections(int herbId);
+
     /**
      * 更新药材收藏数
      * @param herbId 药材 ID

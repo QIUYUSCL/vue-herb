@@ -15,5 +15,9 @@ public interface VideoInfoMapper {
 
     int updateCollections(int videoId);
 
+    int decreaseLikes(int videoId);
+
+    int decreaseCollections(int videoId);
+
     int updateViews(int videoId);
 }

@@ -30,4 +30,13 @@
         WHERE article_id = #{articleId}
     </update>
 
+
+    <update id="decreaseLikes" parameterType="int">
+        update daily_learning set likes = likes - 1 where article_id = #{articleId} and likes > 0
+    </update>
+
+    <update id="decreaseCollections" parameterType="int">
+        update daily_learning set collections = collections - 1 where article_id = #{articleId} and collections > 0
+    </update>
+
 </mapper>

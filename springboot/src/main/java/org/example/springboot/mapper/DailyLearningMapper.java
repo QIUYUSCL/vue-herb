@@ -16,4 +16,8 @@ public interface DailyLearningMapper {
     int updateCollections(int articleId);
 
     int updateViews(int articleId);
+
+    int decreaseLikes(int articleId);
+
+    int decreaseCollections(int articleId);
 }

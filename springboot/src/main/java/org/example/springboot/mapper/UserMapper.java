@@ -90,5 +90,12 @@ public interface UserMapper {
     @MapKey("comment_id")
     List<Map<String, Object>> getCommentsWithUserInfo(@Param("targetType") String targetType, @Param("targetId") int targetId);
 
+    int deleteUserInteraction(@Param("userId") int userId, @Param("targetId") int targetId, @Param("actionType") String actionType);
+
+    List<UserInteraction> getUserLikesByUserId(@Param("userId") int userId);
+
+    int resetPassword(@Param("phone") String phone, @Param("email") String email, @Param("newPassword") String newPassword);
+
+
 
 }

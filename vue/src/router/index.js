@@ -15,6 +15,8 @@ import SearchResult from "@/views/SearchResult.vue";
 import MyCollections from "@/views/my-collections.vue";
 import BrowsingHistory from "@/views/browsing-history.vue";
 import MyComments from "@/views/my-comments.vue";
+import MyLikes from "@/views/my-likes.vue";
+import ForgotPassword from "@/views/ForgotPassword.vue";
 
 const routes = [
     {
@@ -103,6 +105,17 @@ const routes = [
         name: 'MyComments',
         component: MyComments,
         meta: { requiresAuth: true }
+    },
+    {
+        path: '/my-likes',
+        name: 'MyLikes',
+        component: MyLikes,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/forgot-password',
+        name: 'ForgotPassword',
+        component: ForgotPassword
     },
 
 ];

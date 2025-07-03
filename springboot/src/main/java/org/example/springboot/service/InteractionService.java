@@ -72,42 +72,66 @@ public class InteractionService {
      */
     public boolean handleLikeOrCollect(String targetType, int targetId, int userId, String actionType) {
         try {
-            // 检查用户是否已经执行过该操作
-            if (userMapper.hasPerformedAction(userId, targetId, actionType)) {
-                return false;
+
+            boolean hasPerformed = userMapper.hasPerformedAction(userId, targetId, actionType);
+            if (hasPerformed) {
+                // 取消操作
+                userMapper.deleteUserInteraction(userId, targetId, actionType);
+                switch (targetType) {
+                    case "HERB":
+                        if ("LIKE".equals(actionType)) {
+                            herbInfoMapper.decreaseLikes(targetId);
+                        } else if ("COLLECT".equals(actionType)) {
+                            herbInfoMapper.decreaseCollections(targetId);
+                        }
+                        break;
+                    case "VIDEO":
+                        if ("LIKE".equals(actionType)) {
+                            videoInfoMapper.decreaseLikes(targetId);
+                        } else if ("COLLECT".equals(actionType)) {
+                            videoInfoMapper.decreaseCollections(targetId);
+                        }
+                        break;
+                    case "ARTICLE":
+                        if ("LIKE".equals(actionType)) {
+                            dailyLearningMapper.decreaseLikes(targetId);
+                        } else if ("COLLECT".equals(actionType)) {
+                            dailyLearningMapper.decreaseCollections(targetId);
+                        }
+                        break;
+                }
+            } else {
+                // 执行操作
+                switch (targetType) {
+                    case "HERB":
+                        if ("LIKE".equals(actionType)) {
+                            herbInfoMapper.updateLikes(targetId);
+                        } else if ("COLLECT".equals(actionType)) {
+                            herbInfoMapper.updateCollections(targetId);
+                        }
+                        break;
+                    case "VIDEO":
+                        if ("LIKE".equals(actionType)) {
+                            videoInfoMapper.updateLikes(targetId);
+                        } else if ("COLLECT".equals(actionType)) {
+                            videoInfoMapper.updateCollections(targetId);
+                        }
+                        break;
+                    case "ARTICLE":
+                        if ("LIKE".equals(actionType)) {
+                            dailyLearningMapper.updateLikes(targetId);
+                        } else if ("COLLECT".equals(actionType)) {
+                            dailyLearningMapper.updateCollections(targetId);
+                        }
+                        break;
+                }
+                UserInteraction interaction = new UserInteraction();
+                interaction.setUser_id(userId);
+                interaction.setTarget_type(targetType);
+                interaction.setTarget_id(targetId);
+                interaction.setAction_type(actionType);
+                userMapper.insertUserInteraction(interaction);
             }
-
-            switch (targetType) {
-                case "HERB":
-                    if ("LIKE".equals(actionType)) {
-                        herbInfoMapper.updateLikes(targetId);
-                    } else if ("COLLECT".equals(actionType)) {
-                        herbInfoMapper.updateCollections(targetId);
-                    }
-                    break;
-                case "VIDEO":
-
-                     if ("LIKE".equals(actionType)) {
-                         videoInfoMapper.updateLikes(targetId);
-                     } else if ("COLLECT".equals(actionType)) {
-                         videoInfoMapper.updateCollections(targetId);
-                     }
-                    break;
-                case "ARTICLE":
-                     if ("LIKE".equals(actionType)) {
-                         dailyLearningMapper.updateLikes(targetId);
-                     } else if ("COLLECT".equals(actionType)) {
-                         dailyLearningMapper.updateCollections(targetId);
-                     }
-                    break;
-            }
-
-            UserInteraction interaction = new UserInteraction();
-            interaction.setUser_id(userId);
-            interaction.setTarget_type(targetType);
-            interaction.setTarget_id(targetId);
-            interaction.setAction_type(actionType);
-            userMapper.insertUserInteraction(interaction);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

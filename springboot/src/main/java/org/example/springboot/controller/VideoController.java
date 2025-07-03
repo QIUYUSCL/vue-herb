@@ -20,6 +20,7 @@ public class VideoController {
     private VideoInfoService videoInfoService;
 
 
+
     @GetMapping("/selectAll")
     public Result selectAll() {
         List<VideoInfo> videoInfos = videoInfoService.selectAll();

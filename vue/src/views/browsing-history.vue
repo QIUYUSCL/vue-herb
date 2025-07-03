@@ -18,7 +18,7 @@
         <div v-for="(group, index) in groupedHistory" :key="index">
           <!-- 根据 target_type 显示对应的标题 -->
           <h3 class="text-xl font-semibold text-gray-800 mb-2">
-            {{ getTypeName(group[0].target_type) }} 浏览记录
+            {{ getTypeName(group[0].target_type) }}
           </h3>
           <!-- 使用 grid 布局，每行显示三个数据 -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">

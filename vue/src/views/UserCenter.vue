@@ -19,12 +19,12 @@
             </div>
             <div class="mt-4 grid grid-cols-3 gap-2 text-center">
               <div>
-                <div class="text-xl font-semibold">{{ userStats.collectCount }}</div>
-                <div class="text-xs opacity-80">收藏</div>
-              </div>
-              <div>
                 <div class="text-xl font-semibold">{{ userStats.likeCount }}</div>
                 <div class="text-xs opacity-80">点赞</div>
+              </div>
+              <div>
+                <div class="text-xl font-semibold">{{ userStats.collectCount }}</div>
+                <div class="text-xs opacity-80">收藏</div>
               </div>
               <div>
                 <div class="text-xl font-semibold">{{ userStats.commentCount }}</div>
@@ -41,6 +41,13 @@
             >
               <i class="fa fa-user-circle w-6"></i>
               <span class="ml-3">个人资料</span>
+            </router-link>
+            <router-link
+                to="/my-likes"
+                class="flex items-center px-5 py-3 nav-inactive"
+            >
+              <i class="fa fa-thumbs-up w-6"></i>
+              <span class="ml-3">我的点赞</span>
             </router-link>
             <router-link
                 to="/my-collections"
@@ -252,9 +259,17 @@ const fetchUserRelatedData = async () => {
       const interactionResponse = await request.get(`/user/interaction-count/${user_id}`);
       if (interactionResponse.code === "200") {
         const interactionData = interactionResponse.data;
-        userStats.collectCount = interactionData.collectCount;
-        userStats.commentCount = interactionData.commentCount;
-        userStats.likeCount = interactionData.likeCount;
+        // 判断数据是否有效
+        if (interactionData) {
+          userStats.collectCount = interactionData.collectCount || 0;
+          userStats.commentCount = interactionData.commentCount || 0;
+          userStats.likeCount = interactionData.likeCount || 0;
+        } else {
+          // 若数据无效，将统计信息设为 0
+          userStats.collectCount = 0;
+          userStats.commentCount = 0;
+          userStats.likeCount = 0;
+        }
       } else {
         ElMessage.error(interactionResponse.message);
       }

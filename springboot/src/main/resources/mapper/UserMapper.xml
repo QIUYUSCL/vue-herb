@@ -20,7 +20,7 @@
     <insert id="insertUser" parameterType="org.example.springboot.entity.UserInfo">
         INSERT INTO user_info (username, password, avatar, phone, email, gender, status, createTime, updateTime)
         VALUES (#{username}, #{password}, COALESCE(#{avatar}, 'https://img.88icon.com/download/jpg/20201226/9d64c2d320c079cbd4f38f10e066dc71_512_512.jpg!bg'),
-                #{phone}, #{email}, #{gender}, #{status}, NOW(), NOW())
+                #{phone}, #{email}, COALESCE(#{gender}, 1), COALESCE(#{status}, 1), NOW(), NOW())
     </insert>
 
     <select id="getUserCommentsByUserId" parameterType="int" resultType="org.example.springboot.entity.UserComment">
@@ -142,6 +142,21 @@
             CASE WHEN uc.parent_id = 0 THEN uc.comment_id ELSE uc.parent_id END,
             uc.create_time
     </select>
+
+    <delete id="deleteUserInteraction">
+        delete from user_interaction where user_id = #{userId} and target_id = #{targetId} and action_type = #{actionType}
+    </delete>
+
+    <select id="getUserLikesByUserId" parameterType="int" resultType="org.example.springboot.entity.UserInteraction">
+        SELECT * FROM user_interaction WHERE user_id = #{userId} AND action_type = 'LIKE'
+    </select>
+
+    <update id="resetPassword" parameterType="map">
+        UPDATE user_info
+        SET password = #{newPassword}, updateTime = NOW()
+        WHERE phone = #{phone} AND email = #{email}
+    </update>
+
 
 
 </mapper>

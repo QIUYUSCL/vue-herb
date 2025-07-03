@@ -33,7 +33,7 @@ export const handleView = async (targetType, targetId) => {
     }
 };
 
-/*/**
+/**
  * 处理点赞或收藏操作
  * @param {number} targetId - 目标 ID，如药材 ID、视频 ID 等
  * @param {string} targetType - 目标类型，如 'HERB'、'VIDEO' 等
@@ -49,9 +49,13 @@ export const handleInteraction = async (targetId, targetType, actionType, target
     }
 
     try {
-        const url = targetType === 'HERB' ? '/interaction/likeOrCollect' :
-            targetType === 'VIDEO' ? '/interaction/likeOrCollect' :
-                targetType === 'ARTICLE' ? '/interaction/likeOrCollect' :
+        // 根据 actionType 选择不同的请求路径
+        const url = targetType === 'HERB' ?
+            actionType === 'LIKE' ? '/interaction/like' : '/interaction/collect' :
+            targetType === 'VIDEO' ?
+                actionType === 'LIKE' ? '/interaction/like' : '/interaction/collect' :
+                targetType === 'ARTICLE' ?
+                    actionType === 'LIKE' ? '/interaction/like' : '/interaction/collect' :
                     null;
 
         if (!url) {
@@ -65,13 +69,25 @@ export const handleInteraction = async (targetId, targetType, actionType, target
         params.append('actionType', actionType);
 
         const response = await request.post(url, params);
+        console.log('点赞/收藏响应数据:', response); // 添加日志输出
         if (response.code === "200") {
+            const { hasPerformed } = response.data;
             if (actionType === 'LIKE') {
-                targetData.likes += 1;
-                ElMessage.success('点赞成功');
+                if (hasPerformed) {
+                    targetData.likes -= 1; // 取消点赞，减少点赞数
+                    ElMessage.success('点赞已取消');
+                } else {
+                    targetData.likes += 1; // 首次点赞，增加点赞数
+                    ElMessage.success('点赞成功');
+                }
             } else if (actionType === 'COLLECT') {
-                targetData.collections += 1;
-                ElMessage.success('收藏成功');
+                if (hasPerformed) {
+                    targetData.collections -= 1; // 取消收藏，减少收藏数
+                    ElMessage.success('收藏已取消');
+                } else {
+                    targetData.collections += 1; // 首次收藏，增加收藏数
+                    ElMessage.success('收藏成功');
+                }
             }
         } else {
             ElMessage.error(actionType === 'LIKE' ? '请勿重复点赞' : '请勿重复收藏');

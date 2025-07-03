@@ -88,4 +88,12 @@ public class UserService {
         return userMapper.getCommentsWithUserInfo(targetType, targetId);
     }
 
+    public List<UserInteraction> getUserLikesByUserId(int userId) {
+        return userMapper.getUserLikesByUserId(userId);
+    }
+
+    public int resetPassword(String phone, String email, String newPassword) {
+        return userMapper.resetPassword(phone, email, newPassword);
+    }
+
 }

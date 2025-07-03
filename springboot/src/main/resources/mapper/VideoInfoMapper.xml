@@ -30,4 +30,13 @@
         WHERE video_id = #{videoId}
     </update>
 
+
+    <update id="decreaseLikes" parameterType="int">
+        update video_info set likes = likes - 1 where video_id = #{videoId} and likes > 0
+    </update>
+
+    <update id="decreaseCollections" parameterType="int">
+        update video_info set collections = collections - 1 where video_id = #{videoId} and collections > 0
+    </update>
+
 </mapper>

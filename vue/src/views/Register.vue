@@ -46,6 +46,24 @@
               </div>
 
               <div>
+                <label for="register-phone" class="block text-sm font-medium text-gray-700 mb-1">电话号码</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                    <i class="fa fa-phone"></i>
+                  </span>
+                  <input
+                      type="tel"
+                      id="register-phone"
+                      v-model="phone"
+                      placeholder="请输入 11 位电话号码"
+                      class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg input-focus outline-none transition-all duration-300"
+                      maxlength="11"
+                      @input="validatePhone"
+                  />
+                </div>
+              </div>
+
+              <div>
                 <label for="register-password" class="block text-sm font-medium text-gray-700 mb-1">密码</label>
                 <div class="relative">
                   <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
@@ -134,6 +152,7 @@ import { ElMessage } from 'element-plus';
 const username = ref('');
 const email = ref('');
 const password = ref('');
+const phone = ref('');
 const confirmPassword = ref('');
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
@@ -145,8 +164,21 @@ const handleRegister = async () => {
     return;
   }
 
+  // 验证电话号码
+  const validatePhone = () => {
+    const phoneValue = phone.value;
+    if (phoneValue && !/^\d{11}$/.test(phoneValue)) {
+      ElMessage.warning('请输入 11 位数字的电话号码');
+    }
+  };
+
   if (password.value !== confirmPassword.value) {
     ElMessage.error('两次输入的密码不一致');
+    return;
+  }
+
+  if (!/^\d{11}$/.test(phone.value)) {
+    ElMessage.error('请输入有效的 11 位电话号码');
     return;
   }
 
@@ -155,12 +187,14 @@ const handleRegister = async () => {
     return;
   }
 
+
+
   try {
     const userInfo = {
       username: username.value,
       password: password.value,
       email: email.value,
-      // 其他字段可按需补充
+      phone: phone.value
     };
     const response = await request.post('/user/register', userInfo);
     if (response.code === "200") {
