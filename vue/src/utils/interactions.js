@@ -49,13 +49,9 @@ export const handleInteraction = async (targetId, targetType, actionType, target
     }
 
     try {
-        // 根据 actionType 选择不同的请求路径
-        const url = targetType === 'HERB' ?
-            actionType === 'LIKE' ? '/interaction/like' : '/interaction/collect' :
-            targetType === 'VIDEO' ?
-                actionType === 'LIKE' ? '/interaction/like' : '/interaction/collect' :
-                targetType === 'ARTICLE' ?
-                    actionType === 'LIKE' ? '/interaction/like' : '/interaction/collect' :
+        const url = targetType === 'HERB' ? '/interaction/likeOrCollect' :
+            targetType === 'VIDEO' ? '/interaction/likeOrCollect' :
+                targetType === 'ARTICLE' ? '/interaction/likeOrCollect' :
                     null;
 
         if (!url) {
@@ -69,7 +65,6 @@ export const handleInteraction = async (targetId, targetType, actionType, target
         params.append('actionType', actionType);
 
         const response = await request.post(url, params);
-        console.log('点赞/收藏响应数据:', response); // 添加日志输出
         if (response.code === "200") {
             const { hasPerformed } = response.data;
             if (actionType === 'LIKE') {

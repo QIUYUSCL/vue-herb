@@ -8,25 +8,14 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/DailyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/DailyController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/InteractionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/InteractionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/VideoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/VideoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/DailyLearningMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/DailyLearningMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/HerbInfoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/HerbInfoMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/VideoInfoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/VideoInfoMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/DailyLearningService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/DailyLearningService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/InteractionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/InteractionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/mapper/DailyLearningMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/mapper/DailyLearningMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/mapper/HerbInfoMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/mapper/HerbInfoMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/VideoInfoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/VideoInfoService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/mapper/VideoInfoMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/mapper/VideoInfoMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/router/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/src/utils/interactions.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/utils/interactions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/views/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/Register.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/views/UserCenter.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/UserCenter.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/views/browsing-history.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/browsing-history.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/views/my-collections.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/my-collections.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/views/my-comments.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/my-comments.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +134,7 @@
       <workItem from="1751422153164" duration="3748000" />
       <workItem from="1751425931714" duration="15818000" />
       <workItem from="1751450476216" duration="18686000" />
-      <workItem from="1751502307183" duration="6086000" />
+      <workItem from="1751502307183" duration="7790000" />
     </task>
     <servers />
   </component>

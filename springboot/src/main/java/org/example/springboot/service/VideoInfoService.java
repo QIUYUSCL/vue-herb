@@ -29,30 +29,6 @@ public class VideoInfoService {
         return videoInfoMapper.searchVideo("%" + keyword + "%");
     }
 
-    public boolean handleLikeOrCollect(int videoId, int userId, String actionType) {
-        try {
 
-            // 检查用户是否已经执行过该操作
-            if (userMapper.hasPerformedAction(userId, videoId, actionType)) {
-                return false;
-            }
-            if ("LIKE".equals(actionType)) {
-                videoInfoMapper.updateLikes(videoId);
-            } else if ("COLLECT".equals(actionType)) {
-                videoInfoMapper.updateCollections(videoId);
-            }
-
-            UserInteraction interaction = new UserInteraction();
-            interaction.setUser_id(userId);
-            interaction.setTarget_type("VIDEO");
-            interaction.setTarget_id(videoId);
-            interaction.setAction_type(actionType);
-            userMapper.insertUserInteraction(interaction);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
 }

@@ -8,7 +8,6 @@
       <nav class="hidden md:flex space-x-8">
         <router-link to="/" class="text-gray-700 hover:text-primary transition-colors">首页</router-link>
         <router-link to="/herbs" class="text-gray-700 hover:text-primary transition-colors">药材大全</router-link>
-        <router-link to="/remedies" class="text-gray-700 hover:text-primary transition-colors">偏方秘方</router-link>
         <router-link to="/videos" class="text-gray-700 hover:text-primary transition-colors">视频教程</router-link>
         <router-link to="/daily" class="text-gray-700 hover:text-primary transition-colors">每日一学</router-link>
       </nav>

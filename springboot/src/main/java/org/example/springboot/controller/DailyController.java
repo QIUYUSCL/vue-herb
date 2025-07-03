@@ -4,6 +4,8 @@ import jakarta.annotation.Resource;
 import org.example.springboot.common.Result;
 import org.example.springboot.entity.DailyLearning;
 import org.example.springboot.service.DailyLearningService;
+import org.example.springboot.service.InteractionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +17,9 @@ public class DailyController {
 
     @Resource
     private DailyLearningService dailyLearningService;
+
+    @Autowired
+    private InteractionService interactionService;
 
     @GetMapping("/selectAll")
     public Result selectAll(){
@@ -36,7 +41,7 @@ public class DailyController {
 
     @PostMapping("/likeOrCollect")
     public Result likeOrCollect(@RequestParam int articleId, @RequestParam int userId, @RequestParam String actionType) {
-        boolean result = dailyLearningService.handleLikeOrCollect(articleId, userId, actionType);
+        boolean result = interactionService.handleLikeOrCollect("ARTICLE", articleId, userId, actionType);
         if (result) {
             return Result.success("操作成功");
         } else {

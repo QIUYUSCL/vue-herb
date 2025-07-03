@@ -28,11 +28,10 @@ public class InteractionController {
 
     @PostMapping("/likeOrCollect")
     public Result handleLikeOrCollect(@RequestParam String targetType, @RequestParam int targetId, @RequestParam int userId, @RequestParam String actionType) {
-        // 判断用户是否已经执行过该操作
-        boolean hasPerformed = userMapper.hasPerformedAction(userId, targetId, actionType);
+        // 补充 targetType 参数
+        boolean hasPerformed = userMapper.hasPerformedAction(userId, targetId, actionType, targetType);
         boolean result = interactionService.handleLikeOrCollect(targetType, targetId, userId, actionType);
         if (result) {
-            // 根据 hasPerformed 变量返回不同的消息和状态
             return Result.success(hasPerformed ? "操作已取消" : "操作成功", Map.of("hasPerformed", hasPerformed));
         } else {
             return Result.error();
@@ -55,4 +54,5 @@ public class InteractionController {
             return Result.error("400","评论发表失败，服务器错误");
         }
     }
+
 }

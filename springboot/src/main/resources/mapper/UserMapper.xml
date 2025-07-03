@@ -157,6 +157,14 @@
         WHERE phone = #{phone} AND email = #{email}
     </update>
 
+    <select id="hasPerformedAction" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM user_interaction
+        WHERE user_id = #{userId}
+          AND target_id = #{targetId}
+          AND action_type = #{actionType}
+          AND target_type = #{targetType}
+    </select>
 
 
 </mapper>

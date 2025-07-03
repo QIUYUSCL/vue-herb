@@ -72,8 +72,8 @@ public class InteractionService {
      */
     public boolean handleLikeOrCollect(String targetType, int targetId, int userId, String actionType) {
         try {
-
-            boolean hasPerformed = userMapper.hasPerformedAction(userId, targetId, actionType);
+            // 传入 targetType 参数
+            boolean hasPerformed = userMapper.hasPerformedAction(userId, targetId, actionType, targetType);
             if (hasPerformed) {
                 // 取消操作
                 userMapper.deleteUserInteraction(userId, targetId, actionType);

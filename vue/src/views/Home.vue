@@ -58,10 +58,6 @@
         <i class="fa fa-leaf text-primary text-4xl mb-4"></i>
         <h3 class="text-xl font-semibold text-gray-800">药材大全</h3>
       </router-link>
-      <router-link to="/remedies" class="module-card card-hover bg-white p-6 rounded-lg">
-        <i class="fa fa-book text-primary text-4xl mb-4"></i>
-        <h3 class="text-xl font-semibold text-gray-800">偏方秘方</h3>
-      </router-link>
       <router-link to="/videos" class="module-card card-hover bg-white p-6 rounded-lg">
         <i class="fa fa-play-circle text-primary text-4xl mb-4"></i>
         <h3 class="text-xl font-semibold text-gray-800">视频教程</h3>

@@ -5,6 +5,7 @@ import org.example.springboot.common.Result;
 import org.example.springboot.entity.DailyLearning;
 import org.example.springboot.entity.VideoInfo;
 import org.example.springboot.mapper.VideoInfoMapper;
+import org.example.springboot.service.InteractionService;
 import org.example.springboot.service.VideoInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,9 @@ public class VideoController {
 
     @Resource
     private VideoInfoService videoInfoService;
+
+    @Autowired
+    private InteractionService interactionService;
 
 
 
@@ -41,7 +45,7 @@ public class VideoController {
 
     @PostMapping("/likeOrCollect")
     public Result likeOrCollect(@RequestParam int videoId, @RequestParam int userId, @RequestParam String actionType) {
-        boolean result = videoInfoService.handleLikeOrCollect(videoId, userId, actionType);
+        boolean result = interactionService.handleLikeOrCollect("VIDEO", videoId, userId, actionType);
         if (result) {
             return Result.success("操作成功");
         } else {

@@ -70,8 +70,7 @@ public interface UserMapper {
      * @param actionType 操作类型（LIKE 或 COLLECT）
      * @return 若已执行过该操作返回 true，否则返回 false
      */
-    @Select("SELECT COUNT(*) > 0 FROM user_interaction WHERE user_id = #{userId} AND target_id = #{targetId} AND action_type = #{actionType}")
-    boolean hasPerformedAction(@Param("userId") int userId, @Param("targetId") int targetId, @Param("actionType") String actionType);
+    boolean hasPerformedAction(@Param("userId") int userId, @Param("targetId") int targetId, @Param("actionType") String actionType, @Param("targetType") String targetType);
     int insertUserInteraction(UserInteraction interaction);
 
     /**
@@ -95,6 +94,9 @@ public interface UserMapper {
     List<UserInteraction> getUserLikesByUserId(@Param("userId") int userId);
 
     int resetPassword(@Param("phone") String phone, @Param("email") String email, @Param("newPassword") String newPassword);
+
+
+
 
 
 

@@ -30,30 +30,4 @@ public class DailyLearningService {
         return dailyLearningMapper.searchDaily("%" + keyword + "%");
     }
 
-    public boolean handleLikeOrCollect(int articleId, int userId, String actionType) {
-        try {
-            // 检查用户是否已经执行过该操作
-            if (userMapper.hasPerformedAction(userId, articleId, actionType)) {
-                return false;
-            }
-
-            if ("LIKE".equals(actionType)) {
-                dailyLearningMapper.updateLikes(articleId);
-            } else if ("COLLECT".equals(actionType)) {
-                dailyLearningMapper.updateCollections(articleId);
-            }
-
-            UserInteraction interaction = new UserInteraction();
-            interaction.setUser_id(userId);
-            interaction.setTarget_type("ARTICLE");
-            interaction.setTarget_id(articleId);
-            interaction.setAction_type(actionType);
-            userMapper.insertUserInteraction(interaction);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
 }
