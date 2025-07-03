@@ -29,7 +29,8 @@
             <span>{{ article.likes }}</span>
           </div>
         </div>
-        <p class="text-sm text-gray-600 mb-4">{{ article.content }}</p>
+        <!-- 拆分显示文章内容 -->
+        <div v-html="formattedContent"></div>
         <div class="flex items-center mb-4">
           <i class="fa fa-eye text-gray-600"></i>
           <span class="ml-1 text-sm text-gray-600">{{ article.views }} 次观看</span>
@@ -59,7 +60,12 @@
             <div v-for="comment in rootComments" :key="comment.comment_id" class="bg-white p-4 rounded-lg shadow-sm mb-4">
               <!-- 父评论 -->
               <div>
-                <img :src="comment.avatar" alt="用户头像" class="w-8 h-8 rounded-full mb-2">
+                <img
+                    :src="comment.avatar"
+                    alt="用户头像"
+                    class="w-8 h-8 rounded-full mb-2 cursor-pointer"
+                    @click="navigateToUserProfile(comment.user_id)"
+                />
                 <p class="font-semibold">{{ comment.username }}</p>
                 <p class="text-gray-600">{{ comment.content }}</p>
                 <div class="flex justify-between items-center">
@@ -75,7 +81,12 @@
               <!-- 子评论 -->
               <div v-if="isReplyExpanded[comment.comment_id] && comment.children && comment.children.length > 0" class="ml-8 mt-2">
                 <div v-for="childComment in comment.children" :key="childComment.comment_id" class="bg-gray-100 p-4 rounded-lg shadow-sm mb-2">
-                  <img :src="childComment.avatar" alt="用户头像" class="w-8 h-8 rounded-full mb-2">
+                  <img
+                      :src="childComment.avatar"
+                      alt="用户头像"
+                      class="w-8 h-8 rounded-full mb-2 cursor-pointer"
+                      @click="navigateToUserProfile(childComment.user_id)"
+                  />
                   <p class="font-semibold">{{ childComment.username }}</p>
                   <p class="text-gray-600">{{ childComment.content }}</p>
                   <p class="text-sm text-gray-500">{{ formatDate(childComment.create_time) }}</p>
@@ -124,7 +135,14 @@ import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import { Back } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
-import { handleInteraction, handleView, submitComment, fetchComments, submitReplyComment } from "@/utils/interactions.js";
+import {
+  handleInteraction,
+  handleView,
+  submitComment,
+  fetchComments,
+  submitReplyComment,
+  navigateToUserProfile
+} from "@/utils/interactions.js";
 import { commonRequest } from "@/utils/commonRequest.js";
 
 const route = useRoute();
@@ -139,6 +157,22 @@ const comments = ref([]);
 
 // 用于记录每个父评论的子评论展开状态
 const isReplyExpanded = reactive({});
+
+// 计算属性，格式化文章内容
+const formattedContent = computed(() => {
+  if (!article.value) return '';
+  const content = article.value.content;
+  // 按模块拆分内容
+  const sections = content.split(/【([^】]+)】/).filter(Boolean);
+  let formatted = '';
+  for (let i = 0; i < sections.length; i += 2) {
+    const title = sections[i];
+    const text = sections[i + 1];
+    formatted += `<h3 class="text-lg font-semibold text-gray-800 mb-2">【${title}】</h3>`;
+    formatted += `<p class="text-sm text-gray-600 mb-4">${text}</p>`;
+  }
+  return formatted;
+});
 
 // 计算属性，获取根评论（一级评论）
 const rootComments = computed(() => {

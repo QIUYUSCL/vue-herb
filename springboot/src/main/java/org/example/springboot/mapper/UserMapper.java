@@ -95,7 +95,7 @@ public interface UserMapper {
 
     int resetPassword(@Param("phone") String phone, @Param("email") String email, @Param("newPassword") String newPassword);
 
-
+    int updateAvatar(@Param("userId") int userId, @Param("avatar") String avatar);
 
 
 

@@ -175,4 +175,24 @@ public class UserController {
         }
     }
 
+    @PostMapping("/updateAvatar")
+    public Result updateAvatar(@RequestBody Map<String, Object> data) {
+        String userIdStr = (String) data.get("user_id");
+        String avatar = (String) data.get("avatar");
+        if (userIdStr == null || avatar == null) {
+            return Result.error(400, "用户 ID 和头像地址不能为空");
+        }
+        try {
+            int userId = Integer.parseInt(userIdStr);
+            int result = userService.updateAvatar(userId, avatar);
+            if (result > 0) {
+                return Result.success("头像更新成功");
+            } else {
+                return Result.error(500, "头像更新失败");
+            }
+        } catch (NumberFormatException e) {
+            return Result.error(400, "用户 ID 格式不正确");
+        }
+    }
+
 }

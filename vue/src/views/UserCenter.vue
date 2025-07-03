@@ -7,15 +7,38 @@
       <div class="lg:w-1/5">
         <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
           <div class="bg-primary p-5 text-white">
+            <!-- 使用 flex 布局让头像和用户名并排显示 -->
             <div class="flex items-center">
-              <img
+              <button @click="showAvatarSelection = true" class="p-0 border-none bg-transparent">
+                <img
                   :src="userInfo.avatar"
                   alt="用户头像"
                   class="w-16 h-16 rounded-full border-2 border-white object-cover"
-              />
-              <div class="ml-4">
+                />
+              </button>
+              <!-- 将用户名显示在头像旁边 -->
+              <div class="ml-3">
                 <h3 class="font-semibold text-lg">{{ userInfo.username }}</h3>
               </div>
+            </div>
+            <!-- 头像选择弹窗 -->
+            <div v-if="showAvatarSelection" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg z-50">
+              <h3 class="text-lg font-semibold mb-4">选择头像</h3>
+              <div class="grid grid-cols-3 gap-2">
+                <button
+                    v-for="(avatar, index) in availableAvatars"
+                    :key="index"
+                    @click="changeAvatar(avatar)"
+                    class="p-0 border-none bg-transparent"
+                >
+                  <img
+                      :src="avatar"
+                      alt="可选头像"
+                      class="w-16 h-16 rounded-full border-2 border-gray-300 object-cover"
+                  />
+                </button>
+              </div>
+              <button @click="showAvatarSelection = false" class="mt-4 bg-gray-300 p-2 rounded">取消</button>
             </div>
             <div class="mt-4 grid grid-cols-3 gap-2 text-center">
               <div>
@@ -163,6 +186,7 @@ import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import { ElMessage } from 'element-plus';
 import request from '@/utils/request.js';
+import availableAvatars from '@/assets/avatars.js';
 
 // 用户信息
 const userInfo = reactive({
@@ -173,6 +197,33 @@ const userInfo = reactive({
   phone: "",
   gender: "",
 });
+
+
+// 控制头像选择弹窗显示
+const showAvatarSelection = ref(false);
+
+
+// 更换头像方法
+const changeAvatar = async (avatar) => {
+  try {
+    const user_id = localStorage.getItem('user_id');
+    const response = await request.post('/user/updateAvatar', {
+      user_id,
+      avatar
+    });
+    if (response.code === "200") {
+      userInfo.avatar = avatar;
+      ElMessage.success('头像修改成功');
+    } else {
+      ElMessage.error(response.message);
+    }
+  } catch (error) {
+    ElMessage.error('修改头像失败，请稍后重试');
+    console.error('修改头像出错:', error);
+  }
+  showAvatarSelection.value = false;
+};
+
 
 // 用户统计信息
 const userStats = reactive({

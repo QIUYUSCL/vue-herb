@@ -16,9 +16,6 @@
               <router-link to="/herbs" class="hover:text-primary transition-colors">药材大全</router-link>
             </li>
             <li class="mb-2">
-              <router-link to="/remedies" class="hover:text-primary transition-colors">偏方秘方</router-link>
-            </li>
-            <li class="mb-2">
               <router-link to="/videos" class="hover:text-primary transition-colors">视频教程</router-link>
             </li>
             <li>

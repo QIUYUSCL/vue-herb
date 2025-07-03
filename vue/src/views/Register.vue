@@ -221,7 +221,9 @@ const togglePassword = () => {
   showPassword.value = !showPassword.value;
 };
 
-
+const toggleConfirmPassword = () => {
+  showConfirmPassword.value = !showConfirmPassword.value;
+};
 </script>
 
 <style scoped>

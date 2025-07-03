@@ -3,16 +3,16 @@ server:
 spring:
   application:
     name: spring-boot-application
-#  datasource:
-#    url: jdbc:mysql://192.168.62.181:3306/ruoyi_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-#    username: cezitime
-#    password: 123
-#    driver-class-name: com.mysql.cj.jdbc.Driver
   datasource:
-    url: jdbc:mysql://localhost:3306/ruoyi_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: Scl03282219
+    url: jdbc:mysql://192.168.212.29:3306/ruoyi_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: herb
+    password: 123
     driver-class-name: com.mysql.cj.jdbc.Driver
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/ruoyi_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: Scl03282219
+#    driver-class-name: com.mysql.cj.jdbc.Driver
   jackson:
     serialization:
       indent-output: true

@@ -166,5 +166,10 @@
           AND target_type = #{targetType}
     </select>
 
+    <update id="updateAvatar" parameterType="map">
+        UPDATE user_info
+        SET avatar = #{avatar}, updateTime = NOW()
+        WHERE user_id = #{userId}
+    </update>
 
 </mapper>

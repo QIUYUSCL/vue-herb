@@ -1,5 +1,7 @@
 import request from '@/utils/request.js';
 import { ElMessage } from 'element-plus';
+import {useRouter} from "vue-router";
+import router from '@/router';
 
 /**
  * 处理浏览操作
@@ -191,12 +193,26 @@ export const submitReplyComment = async (targetType, targetId, parentId, content
         };
 
         const response = await request.post('/interaction/addComment', commentData);
-        if (response.code === '200') {
+        if (response.code === "200") {
             ElMessage.success('回复发表成功');
         } else {
             ElMessage.error('回复发表失败');
         }
     } catch (error) {
         ElMessage.error('回复发表失败，请稍后重试');
+    }
+
+};
+
+/**
+ * 跳转到用户个人主页
+ * @param {number} userId 用户 ID
+ */
+export const navigateToUserProfile = async (userId) => {
+    try {
+        router.push({ name: 'UserProfile', params: { id: userId } });
+    } catch (error) {
+        ElMessage.error('跳转用户个人主页失败，请稍后重试');
+        console.error('跳转用户个人主页出错:', error);
     }
 };

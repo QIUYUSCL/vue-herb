@@ -96,4 +96,8 @@ public class UserService {
         return userMapper.resetPassword(phone, email, newPassword);
     }
 
+    public int updateAvatar(int userId, String avatar) {
+        return userMapper.updateAvatar(userId, avatar);
+    }
+
 }

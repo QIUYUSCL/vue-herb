@@ -45,12 +45,17 @@
         </div>
       </div>
     </div>
+    <Pagination
+        :total="dailyArticles.length"
+        :page-size="pageSize"
+        @page-change="handleCurrentChange"
+    />
   </div>
   <Footer />
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import {ref, onMounted, computed} from 'vue';
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import { useRouter } from 'vue-router';
@@ -58,12 +63,26 @@ import Request  from "@/utils/request.js";
 import request from "@/utils/request.js";
 import {ElMessage} from "element-plus";
 import {commonRequest} from "@/utils/commonRequest.js";
+import Pagination from "@/components/Pagination.vue";
+import {handleCurrentChange} from "element-plus/es/components/tree/src/model/util";
 
 const router = useRouter();
 
 
 const loading = ref(true);
 const dailyArticles = ref([]);
+
+// 当前页码
+const currentPage = ref(1);
+// 每页显示条目数
+const pageSize = ref(9);
+
+// 计算当前页要显示的文章列表
+const paginatedArticles = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return dailyArticles.value.slice(start, end);
+});
 
 const fetchArticle = async () => {
   try {
@@ -83,6 +102,8 @@ const formatDate = (dateString) => {
 const viewArticle = (articleId) => {
   router.push({ name: 'DailyDetail', params: { id: articleId } });
 };
+
+
 
 onMounted(() => {
   fetchArticle()

@@ -54,7 +54,12 @@
             <div v-for="comment in rootComments" :key="comment.comment_id" class="bg-white p-4 rounded-lg shadow-sm mb-4">
               <!-- 父评论 -->
               <div>
-                <img :src="comment.avatar" alt="用户头像" class="w-8 h-8 rounded-full mb-2">
+                <img
+                    :src="comment.avatar"
+                    alt="用户头像"
+                    class="w-8 h-8 rounded-full mb-2 cursor-pointer"
+                    @click="navigateToUserProfile(comment.user_id)"
+                />
                 <p class="font-semibold">{{ comment.username }}</p>
                 <p class="text-gray-600">{{ comment.content }}</p>
                 <div class="flex justify-between items-center">
@@ -70,7 +75,12 @@
               <!-- 子评论 -->
               <div v-if="isReplyExpanded[comment.comment_id] && comment.children && comment.children.length > 0" class="ml-8 mt-2">
                 <div v-for="childComment in comment.children" :key="childComment.comment_id" class="bg-gray-100 p-4 rounded-lg shadow-sm mb-2">
-                  <img :src="childComment.avatar" alt="用户头像" class="w-8 h-8 rounded-full mb-2">
+                  <img
+                      :src="childComment.avatar"
+                      alt="用户头像"
+                      class="w-8 h-8 rounded-full mb-2 cursor-pointer"
+                      @click="navigateToUserProfile(childComment.user_id)"
+                  />
                   <p class="font-semibold">{{ childComment.username }}</p>
                   <p class="text-gray-600">{{ childComment.content }}</p>
                   <p class="text-sm text-gray-500">{{ formatDate(childComment.create_time) }}</p>
@@ -117,8 +127,15 @@ import Footer from '@/components/Footer.vue';
 import {Back} from "@element-plus/icons-vue";
 import router from "@/router";
 import {ElMessage} from "element-plus";
-import {fetchComments, handleInteraction, handleView, submitComment, submitReplyComment} from "@/utils/interactions.js";
+import {fetchComments,
+  handleInteraction,
+  handleView,
+  submitComment,
+  submitReplyComment,
+  navigateToUserProfile,
+} from "@/utils/interactions.js";
 import {commonRequest} from "@/utils/commonRequest.js";
+
 
 const route = useRoute();
 const video = ref(null);
