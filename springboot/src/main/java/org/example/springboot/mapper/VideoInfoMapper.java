@@ -20,4 +20,6 @@ public interface VideoInfoMapper {
     int decreaseCollections(int videoId);
 
     int updateViews(int videoId);
+
+    List<VideoInfo> selectByLikes(int limit);
 }

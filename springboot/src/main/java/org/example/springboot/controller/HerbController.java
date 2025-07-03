@@ -45,6 +45,18 @@ public class HerbController {
         return Result.success(list);
     }
 
+    @GetMapping("/info/selectByLikes")
+    public Result selectByLikes(@RequestParam int limit) {
+        List<HerbInfo> list = herbInfoService.selectByLikes(limit);
+        return Result.success(list);
+    }
+
+    @GetMapping("/info/selectByCollections")
+    public Result selectByCollections(@RequestParam int limit) {
+        List<HerbInfo> list = herbInfoService.selectByCollections(limit);
+        return Result.success(list);
+    }
+
 
 }
 

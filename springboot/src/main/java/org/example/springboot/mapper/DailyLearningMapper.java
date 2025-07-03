@@ -22,4 +22,7 @@ public interface DailyLearningMapper {
     int decreaseLikes(int articleId);
 
     int decreaseCollections(int articleId);
+
+    List<DailyLearning> selectByLikes(int limit);
+
 }

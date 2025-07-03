@@ -39,4 +39,8 @@
         update daily_learning set collections = collections - 1 where article_id = #{articleId} and collections > 0
     </update>
 
+    <select id="selectByLikes" parameterType="int" resultType="org.example.springboot.entity.DailyLearning">
+        select * from daily_learning ORDER BY likes DESC LIMIT #{limit}
+    </select>
+
 </mapper>

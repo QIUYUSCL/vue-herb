@@ -34,4 +34,12 @@ public class HerbInfoService {
         return herbInfoMapper.searchHerbs("%" + keyword + "%");
     }
 
+    public List<HerbInfo> selectByLikes(int limit) {
+        return herbInfoMapper.selectByLikes(limit);
+    }
+
+    public List<HerbInfo> selectByCollections(int limit) {
+        return herbInfoMapper.selectByCollections(limit);
+    }
+
 }

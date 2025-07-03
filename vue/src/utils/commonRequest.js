@@ -23,6 +23,12 @@ export const commonRequest = async (type, action, params = {}) => {
             } else if (action === 'search') {
                 url = '/herb/info/search';
                 config.params = { keyword: params.keyword };
+            } else if (action === 'selectByLikes') {
+                url = '/herb/info/selectByLikes';
+                config.params = { limit: params.limit };
+            } else if (action === 'selectByCollections') {
+                url = '/herb/info/selectByCollections';
+                config.params = { limit: params.limit };
             }
             break;
         case 'video':
@@ -33,6 +39,9 @@ export const commonRequest = async (type, action, params = {}) => {
             } else if (action === 'search') {
                 url = '/video/search';
                 config.params = { keyword: params.keyword };
+            } else if (action === 'selectByLikes') {
+                url = '/video/selectByLikes';
+                config.params = { limit: params.limit };
             }
             break;
         case 'article':
@@ -43,6 +52,9 @@ export const commonRequest = async (type, action, params = {}) => {
             } else if (action === 'search') {
                 url = '/daily/search';
                 config.params = { keyword: params.keyword };
+            } else if (action === 'selectByLikes') {
+                url = '/daily/selectByLikes';
+                config.params = { limit: params.limit };
             }
             break;
 

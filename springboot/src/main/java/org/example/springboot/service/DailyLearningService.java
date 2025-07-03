@@ -30,4 +30,8 @@ public class DailyLearningService {
         return dailyLearningMapper.searchDaily("%" + keyword + "%");
     }
 
+    public List<DailyLearning> selectByLikes(int limit) {
+        return dailyLearningMapper.selectByLikes(limit);
+    }
+
 }

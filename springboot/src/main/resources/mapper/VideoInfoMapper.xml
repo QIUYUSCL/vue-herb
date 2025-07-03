@@ -39,4 +39,8 @@
         update video_info set collections = collections - 1 where video_id = #{videoId} and collections > 0
     </update>
 
+    <select id="selectByLikes" parameterType="int" resultType="org.example.springboot.entity.VideoInfo">
+        select * from video_info ORDER BY likes DESC LIMIT #{limit}
+    </select>
+
 </mapper>

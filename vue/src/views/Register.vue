@@ -59,7 +59,10 @@
                       class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg input-focus outline-none transition-all duration-300"
                       maxlength="11"
                       @input="validatePhone"
+                      @blur="clearPhoneWarning"
                   />
+                  <!-- 显示错误提示 -->
+                  <div v-if="phoneError" class="text-red-500 text-sm mt-1">{{ phoneError }}</div>
                 </div>
               </div>
 
@@ -157,20 +160,28 @@ const confirmPassword = ref('');
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const agreeTerms = ref(false);
+const phoneError = ref(''); // 新增错误提示状态
+
+// 将验证函数移到 handleRegister 外部
+const validatePhone = () => {
+  const phoneValue = phone.value;
+  if (phoneValue && !/^\d{11}$/.test(phoneValue)) {
+    phoneError.value = '请输入 11 位数字的电话号码';
+  } else {
+    phoneError.value = '';
+  }
+};
+
+// 新增清除错误提示函数
+const clearPhoneWarning = () => {
+  phoneError.value = '';
+};
 
 const handleRegister = async () => {
   if (!username.value || !email.value || !password.value || !confirmPassword.value) {
     ElMessage.error('请填写所有必填字段');
     return;
   }
-
-  // 验证电话号码
-  const validatePhone = () => {
-    const phoneValue = phone.value;
-    if (phoneValue && !/^\d{11}$/.test(phoneValue)) {
-      ElMessage.warning('请输入 11 位数字的电话号码');
-    }
-  };
 
   if (password.value !== confirmPassword.value) {
     ElMessage.error('两次输入的密码不一致');
@@ -186,8 +197,6 @@ const handleRegister = async () => {
     ElMessage.error('请同意用户协议和隐私政策');
     return;
   }
-
-
 
   try {
     const userInfo = {
@@ -212,9 +221,7 @@ const togglePassword = () => {
   showPassword.value = !showPassword.value;
 };
 
-const toggleConfirmPassword = () => {
-  showConfirmPassword.value = !showConfirmPassword.value;
-};
+
 </script>
 
 <style scoped>

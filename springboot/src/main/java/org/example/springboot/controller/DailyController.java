@@ -49,5 +49,10 @@ public class DailyController {
         }
     }
 
+    @GetMapping("/selectByLikes")
+    public Result selectByLikes(@RequestParam int limit) {
+        List<DailyLearning> list = dailyLearningService.selectByLikes(limit);
+        return Result.success(list);
+    }
 
 }

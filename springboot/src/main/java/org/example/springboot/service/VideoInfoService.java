@@ -29,6 +29,8 @@ public class VideoInfoService {
         return videoInfoMapper.searchVideo("%" + keyword + "%");
     }
 
-
+    public List<VideoInfo> selectByLikes(int limit) {
+        return videoInfoMapper.selectByLikes(limit);
+    }
 
 }

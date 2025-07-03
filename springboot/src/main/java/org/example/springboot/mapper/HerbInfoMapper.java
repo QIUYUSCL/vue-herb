@@ -30,4 +30,9 @@ public interface HerbInfoMapper {
     int updateCollections(int herbId);
 
     int updateViews(int herbId);
+
+
+    List<HerbInfo> selectByLikes(int limit);
+
+    List<HerbInfo> selectByCollections(int limit);
 }

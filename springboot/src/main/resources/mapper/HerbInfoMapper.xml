@@ -42,4 +42,12 @@
         update herb_info set collections = collections - 1 where herb_id = #{herbId} and collections > 0
     </update>
 
+    <select id="selectByLikes" parameterType="int" resultType="org.example.springboot.entity.HerbInfo">
+        select * from herb_info ORDER BY likes DESC LIMIT #{limit}
+    </select>
+
+    <select id="selectByCollections" parameterType="int" resultType="org.example.springboot.entity.HerbInfo">
+        select * from herb_info ORDER BY collections DESC LIMIT #{limit}
+    </select>
+
 </mapper>

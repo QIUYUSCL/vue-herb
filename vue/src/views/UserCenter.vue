@@ -70,31 +70,7 @@
               <i class="fa fa-comment w-6"></i>
               <span class="ml-3">我的评论</span>
             </router-link>
-            <router-link
-                to="/notifications"
-                class="flex items-center px-5 py-3 nav-inactive"
-            >
-              <i class="fa fa-bell w-6"></i>
-              <span class="ml-3">消息通知</span>
-              <span
-                  class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full"
-              >{{ notificationCount }}</span
-              >
-            </router-link>
-            <router-link
-                to="/account-settings"
-                class="flex items-center px-5 py-3 nav-inactive"
-            >
-              <i class="fa fa-cog w-6"></i>
-              <span class="ml-3">账户设置</span>
-            </router-link>
-            <router-link
-                to="/help-center"
-                class="flex items-center px-5 py-3 nav-inactive"
-            >
-              <i class="fa fa-question-circle w-6"></i>
-              <span class="ml-3">帮助中心</span>
-            </router-link>
+
           </nav>
         </div>
       </div>
@@ -125,7 +101,8 @@
           </el-form>
         </div>
 
-        <el-card class="change-password-card">
+
+        <el-card class="change-password-card relative">
           <template #header>
             <div class="flex justify-between items-center">
               <span>修改密码</span>
@@ -165,13 +142,16 @@
             </el-form-item>
           </el-form>
         </el-card>
+
+        <div class="logout-container  mt-8 ml-auto max-w-fit">
+          <div class="logout-button  bottom-5 right-5">
+            <el-button type="danger" @click="logout">退出登录</el-button>
+          </div>
+        </div>
+
       </div>
     </div>
   </main>
-
-  <div class="logout-button">
-    <el-button type="danger" @click="logout">退出登录</el-button>
-  </div>
 
   <Footer />
 </template>
@@ -201,8 +181,7 @@ const userStats = reactive({
   comments: 0,
 });
 
-// 消息通知数量
-const notificationCount = ref(5);
+
 
 // 密码修改表单数据
 const passwordForm = reactive({
@@ -350,10 +329,11 @@ const submitPasswordChange = async () => {
 };
 // 退出登录
 const logout = () => {
-  // 清除用户登录状态，实际项目中应清除 token 等信息
+  // 清除用户登录状态，
   localStorage.removeItem("token");
   localStorage.removeItem("user_id");
   router.push("/login");
+  ElMessage.success('退出成功');
 };
 </script>
 

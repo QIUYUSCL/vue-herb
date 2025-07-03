@@ -53,4 +53,10 @@ public class VideoController {
         }
     }
 
+    @GetMapping("/selectByLikes")
+    public Result selectByLikes(@RequestParam int limit) {
+        List<VideoInfo> list = videoInfoService.selectByLikes(limit);
+        return Result.success(list);
+    }
+
 }
