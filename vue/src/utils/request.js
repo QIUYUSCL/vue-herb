@@ -2,7 +2,8 @@ import axios from 'axios';
 
 // 创建 axios 实例
 const service = axios.create({
-    baseURL: 'http://192.168.212.29:8080',
+    // 使用代理路径
+    baseURL: '/api',
     timeout: 5000 // 请求超时时间
 });
 
