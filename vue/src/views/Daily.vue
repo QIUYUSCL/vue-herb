@@ -6,7 +6,7 @@
       <div class="flex items-center text-sm text-gray-600">
         <router-link to="/" class="hover:text-primary">首页</router-link>
         <i class="fa fa-angle-right mx-2 text-gray-400"></i>
-        <span class="text-gray-800">每日一学</span>
+        <span class="text-gray-800">偏方秘方</span>
       </div>
     </div>
   </div>

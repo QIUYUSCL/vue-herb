@@ -6,14 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="94ae4c3b-50de-4621-aa99-7260aabd054f" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/VideoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/VideoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/VideoInfoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/mapper/VideoInfoMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/VideoInfoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/VideoInfoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/mapper/VideoInfoMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/mapper/VideoInfoMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/utils/commonRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/utils/commonRequest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/components/Footer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/components/Footer.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/components/Header.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/components/Header.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/Daily.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/Daily.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/Home.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/src/views/VideoDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/VideoDetail.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/vite.config.js" afterDir="false" />
     </list>
@@ -141,7 +139,7 @@
       <workItem from="1751450476216" duration="18686000" />
       <workItem from="1751502307183" duration="25145000" />
       <workItem from="1751536040572" duration="5255000" />
-      <workItem from="1751592617313" duration="5909000" />
+      <workItem from="1751592617313" duration="10680000" />
     </task>
     <servers />
   </component>

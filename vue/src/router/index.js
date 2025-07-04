@@ -18,6 +18,7 @@ import MyComments from "@/views/my-comments.vue";
 import MyLikes from "@/views/my-likes.vue";
 import ForgotPassword from "@/views/ForgotPassword.vue";
 import UserProfile from "@/views/UserProfile.vue";
+import DailyHerbKnowledge from "@/views/DailyHerbKnowledge.vue";
 
 const routes = [
     {
@@ -122,6 +123,11 @@ const routes = [
         path: '/user-profile/:id',
         name: 'UserProfile',
         component: UserProfile
+    },
+    {
+        path: '/daily-herb-knowledge',
+        name: 'DailyHerbKnowledge',
+        component: DailyHerbKnowledge
     }
 
 ];

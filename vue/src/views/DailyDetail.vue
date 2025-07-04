@@ -7,7 +7,7 @@
         <div class="flex items-center text-sm text-gray-600">
           <router-link to="/" class="hover:text-primary">首页</router-link>
           <i class="fa fa-angle-right mx-2 text-gray-400"></i>
-          <router-link to="/daily" class="hover:text-primary">每日一学</router-link>
+          <router-link to="/daily" class="hover:text-primary">偏方秘方</router-link>
           <i class="fa fa-angle-right mx-2 text-gray-400"></i>
           <span v-if="article" class="text-gray-800">{{ article.title }}</span>
           <span v-else class="text-gray-800">文章详情</span>

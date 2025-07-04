@@ -37,7 +37,7 @@
     </div>
 
     <!-- 功能模块 -->
-    <div class="featured-modules container mx-auto px-4 py-8 grid grid-cols-4 gap-6">
+    <div class="featured-modules container mx-auto px-4 py-8 grid grid-cols-5 gap-6">
       <router-link to="/" class="module-card card-hover bg-white p-6 rounded-lg">
         <i class="fa fa-home text-primary text-4xl mb-4"></i>
         <h3 class="text-xl font-semibold text-gray-800">首页</h3>
@@ -51,6 +51,10 @@
         <h3 class="text-xl font-semibold text-gray-800">视频教程</h3>
       </router-link>
       <router-link to="/daily" class="module-card card-hover bg-white p-6 rounded-lg">
+        <i class="fa fa-flask text-primary text-4xl mb-4"></i>
+        <h3 class="text-xl font-semibold text-gray-800">偏方秘方</h3>
+      </router-link>
+      <router-link to="/daily-herb-knowledge" class="module-card card-hover bg-white p-6 rounded-lg">
         <i class="fa fa-calendar text-primary text-4xl mb-4"></i>
         <h3 class="text-xl font-semibold text-gray-800">每日一学</h3>
       </router-link>

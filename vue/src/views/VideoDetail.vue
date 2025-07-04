@@ -19,7 +19,7 @@
       <div v-if="video" class="video-detail bg-white p-6 rounded-lg shadow-md">
         <!-- 视频播放器 -->
         <video
-          :src="`http://localhost:9090${video.video_url}`"
+          :src="`http://192.168.212.29:9090${video.video_url}`"
           controls
           class="w-full h-auto mb-4 rounded-lg"
           :poster="video.cover_image"

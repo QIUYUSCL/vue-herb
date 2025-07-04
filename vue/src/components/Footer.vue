@@ -18,8 +18,11 @@
             <li class="mb-2">
               <router-link to="/videos" class="hover:text-primary transition-colors">视频教程</router-link>
             </li>
-            <li>
-              <router-link to="/daily" class="hover:text-primary transition-colors">每日一学</router-link>
+            <li class="mb-2">
+              <router-link to="/daily" class="hover:text-primary transition-colors">偏方秘方</router-link>
+            </li>
+            <li class="mb-2">
+              <router-link to="/daily-herb-knowledge" class="hover:text-primary transition-colors">每日一学</router-link>
             </li>
           </ul>
         </div>
