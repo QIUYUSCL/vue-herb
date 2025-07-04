@@ -1,5 +1,6 @@
 package org.example.springboot.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.example.springboot.entity.VideoInfo;
 
 import java.util.List;
@@ -22,4 +23,5 @@ public interface VideoInfoMapper {
     int updateViews(int videoId);
 
     List<VideoInfo> selectByLikes(int limit);
+
 }

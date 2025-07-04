@@ -67,13 +67,11 @@ export const commonRequest = async (type, action, params = {}) => {
         const response = await request[method](url, config);
         if (response.code === "200") {
             return response.data;
-        } else {
-            ElMessage.error(response.msg || '请求失败');
-            return Promise.reject(new Error(response.msg || '请求失败'));
         }
+        ElMessage.error(response.message);
+        return Promise.reject(new Error(response.message));
     } catch (error) {
-        console.error('通用请求出错:', error);
-        ElMessage.error('请求出错，请稍后重试');
+        ElMessage.error('请求失败，请稍后重试');
         return Promise.reject(error);
     }
 };

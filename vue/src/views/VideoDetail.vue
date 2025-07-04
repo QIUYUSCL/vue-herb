@@ -19,10 +19,10 @@
       <div v-if="video" class="video-detail bg-white p-6 rounded-lg shadow-md">
         <!-- 视频播放器 -->
         <video
-            :src="video.video_url"
-            controls
-            class="w-full h-auto mb-4 rounded-lg"
-            :poster="video.cover_image"
+          :src="`http://localhost:9090${video.video_url}`"
+          controls
+          class="w-full h-auto mb-4 rounded-lg"
+          :poster="video.cover_image"
         ></video>
         <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ video.title }}</h2>
         <p class="text-sm text-gray-600 mb-4">{{ video.description }}</p>
@@ -151,6 +151,8 @@ const fetchVideoDetail = async () => {
   try {
     const videoId = parseInt(route.params.id);
     const data = await commonRequest('video', 'selectById', {id: videoId});
+    // 打印获取到的视频数据，用于调试
+    console.log('获取到的视频数据:', data);
     video.value = data;
   } catch (error) {
     ElMessage.error('获取视频信息失败，请稍后重试');

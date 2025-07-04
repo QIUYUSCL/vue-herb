@@ -21,8 +21,20 @@ public class VideoInfoService {
         return videoInfoMapper.selectAll();
     }
 
-    public VideoInfo selectById(int id){
-        return videoInfoMapper.selectById(id);
+    public VideoInfo selectById(int id) {
+        VideoInfo videoInfo = videoInfoMapper.selectById(id);
+        if (videoInfo != null && videoInfo.getVideo_url() != null) {
+            // 打印原始视频 URL，用于调试
+            System.out.println("原始视频 URL: " + videoInfo.getVideo_url());
+            // 将反斜杠替换为正斜杠
+            String normalizedUrl = videoInfo.getVideo_url().replace("\\", "/");
+            // 替换本地路径为可访问的 URL
+            String videoUrl = normalizedUrl.replace("D:/视频/Captures/", "/video-resource/");
+            videoInfo.setVideo_url(videoUrl);
+            // 打印转换后的视频 URL，用于调试
+            System.out.println("转换后的视频 URL: " + videoUrl);
+        }
+        return videoInfo;
     }
 
     public List<VideoInfo> searchVideos(String keyword) {
@@ -32,5 +44,6 @@ public class VideoInfoService {
     public List<VideoInfo> selectByLikes(int limit) {
         return videoInfoMapper.selectByLikes(limit);
     }
+
 
 }

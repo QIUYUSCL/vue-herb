@@ -4,7 +4,6 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
-
 export default defineConfig({
   plugins: [
     vue(),
@@ -21,8 +20,10 @@ export default defineConfig({
     proxy: {
       // 配置代理
       '/api': {
-        target: 'http://10.81.130.176:8080',
+        // target: 'http://192.168.212.29:9090',
+        target: 'http://127.0.0.1:9090',
         changeOrigin: true,
+        secure: false, // 忽略证书验证
         rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
