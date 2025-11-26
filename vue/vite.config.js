@@ -21,7 +21,7 @@ export default defineConfig({
       // 配置代理
       '/api': {
         //target: 'http://192.168.212.29:9090',
-        target: 'http://127.0.0.1:9090',
+        target: 'http://localhost:9090',
         changeOrigin: true,
         secure: false, // 忽略证书验证
         rewrite: (path) => path.replace(/^\/api/, '')

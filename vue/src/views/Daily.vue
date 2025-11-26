@@ -13,7 +13,7 @@
   <div class="daily-page bg-gray-50 min-h-screen p-8">
     <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
-          v-for="article in dailyArticles"
+          v-for="article in paginatedArticles"
           :key="article.article_id"
           class="bg-white p-6 rounded-lg shadow-md hover:scale-105 hover:shadow-xl transition-transform duration-300 cursor-pointer"
           @click="viewArticle(article.article_id)"
@@ -59,15 +59,11 @@ import {ref, onMounted, computed} from 'vue';
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import { useRouter } from 'vue-router';
-import Request  from "@/utils/request.js";
-import request from "@/utils/request.js";
 import {ElMessage} from "element-plus";
 import {commonRequest} from "@/utils/commonRequest.js";
 import Pagination from "@/components/Pagination.vue";
-import {handleCurrentChange} from "element-plus/es/components/tree/src/model/util";
 
 const router = useRouter();
-
 
 const loading = ref(true);
 const dailyArticles = ref([]);
@@ -103,7 +99,10 @@ const viewArticle = (articleId) => {
   router.push({ name: 'DailyDetail', params: { id: articleId } });
 };
 
-
+// 页码变化时的处理函数
+const handleCurrentChange = (page) => {
+  currentPage.value = page;
+};
 
 onMounted(() => {
   fetchArticle()

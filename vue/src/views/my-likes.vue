@@ -13,6 +13,7 @@
     </div>
     <!-- 主要内容区域 -->
     <main class="container mx-auto px-4 py-8">
+      <el-button type="success" round :icon="Back" @click="goBack" class="mb-4" />
       <h2 class="text-2xl font-bold text-gray-800 mb-6">我的点赞</h2>
       <div v-if="groupedLikes.length > 0">
         <div v-for="(group, index) in groupedLikes" :key="index">
@@ -155,6 +156,7 @@ import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import request from '@/utils/request.js';
 import { ElMessage } from 'element-plus';
+import {Back} from "@element-plus/icons-vue";
 
 const router = useRouter();
 const likes = ref([]);
@@ -299,7 +301,7 @@ const getTypeName = (type) => {
     case 'VIDEO':
       return '视频';
     case 'ARTICLE':
-      return '每日一学';
+      return '偏方秘方';
     default:
       return type;
   }
@@ -332,6 +334,11 @@ const formatDuration = (seconds) => {
 // 格式化日期函数
 const formatDate = (dateString) => {
   return new Date(dateString).toLocaleString();
+};
+
+// 返回上一页的方法
+const goBack = () => {
+  router.go(-1);
 };
 
 onMounted(() => {

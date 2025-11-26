@@ -5,14 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="94ae4c3b-50de-4621-aa99-7260aabd054f" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/VideoInfoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/service/VideoInfoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/components/Footer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/components/Footer.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/components/Header.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/components/Header.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/config/ResourceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/config/ResourceConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/DailyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/DailyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/DailyHerbKnowledgeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/DailyHerbKnowledgeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/HerbController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/HerbController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/InteractionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/InteractionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/VideoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/org/example/springboot/controller/VideoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/src/views/Daily.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/Daily.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/views/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/Home.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/src/views/VideoDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/VideoDetail.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/browsing-history.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/browsing-history.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/my-collections.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/my-collections.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/my-comments.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/my-comments.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/my-likes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/my-likes.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -139,7 +146,17 @@
       <workItem from="1751450476216" duration="18686000" />
       <workItem from="1751502307183" duration="25145000" />
       <workItem from="1751536040572" duration="5255000" />
-      <workItem from="1751592617313" duration="10680000" />
+      <workItem from="1751592617313" duration="15261000" />
+      <workItem from="1751617096713" duration="586000" />
+      <workItem from="1751617823456" duration="27000" />
+      <workItem from="1751617862748" duration="443000" />
+      <workItem from="1751620686865" duration="3720000" />
+      <workItem from="1753603885584" duration="410000" />
+      <workItem from="1753604617212" duration="685000" />
+      <workItem from="1754733499222" duration="39000" />
+      <workItem from="1763987012214" duration="69000" />
+      <workItem from="1764150578332" duration="856000" />
+      <workItem from="1764159696979" duration="347000" />
     </task>
     <servers />
   </component>
